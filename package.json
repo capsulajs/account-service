@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "flow": "^0.2.3",
+    "rxjs": "^6.2.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-flow": "^6.23.0",
+    "flow-bin": "^0.77.0",
+    "jsdoc": "~3.5.5"
+  },
+  "name": "account-service",
+  "description": "Account service",
+  "version": "0.0.1",
+  "main": "src/AccountService.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/capsulajs/account-service.git"
+  },
+  "keywords": [
+    "microfrontend",
+    "service",
+    "account",
+    "login",
+    "authentication"
+  ],
+  "author": "Stephane Benayoun (https://github.com/stephanebenayoun)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/capsulajs/account-service/issues"
+  },
+  "homepage": "https://github.com/capsulajs/account-service#readme"
+}
