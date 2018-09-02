@@ -2,10 +2,10 @@ import { Account } from './Account';
 
 interface AccountService {
   list: () => Promise<Account[]>;
-  invite: ({ userId, accountId, permission }) => Promise<>;
-  revoke: ({ userId, accountId }) => Promise<>;
-  add: ({ accountId, projectKey: string }) => Promise<Account>;
-  remove: ({ accountId, projectKey: string }) => Promise<Account>;
+  invite: ({ userId: string, accountId: string, permission: string }) => Promise<>;
+  revoke: ({ userId: string, accountId: string }) => Promise<>;
+  add: ({ accountId: string, projectKey: string }) => Promise<Account>;
+  remove: ({ accountId: string, projectKey: string }) => Promise<Account>;
 }
 
 export default AccountService;
