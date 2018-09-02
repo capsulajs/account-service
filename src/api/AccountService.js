@@ -1,22 +1,30 @@
-import { User, Member } from './User';
-import { Organization } from './Organization';
+import { Account } from './Account';
 
 interface AccountService {
-  authenticate: () => Promise<string>; // TODO not clear yet
-
-  getUser: () => Promise<User>;
-  searchUser: ({ search: string }) => Promise<User[]>
-
-  createOrganization: ({ name: string, email: string }) => Promise<Organization>;
-  updateOrganization: ({ organizationId: string, name: string, email: string }) => Promise<Organization>;
-  deleteOrganization: ({ organizationId: string }) => Promise<>;
-  getMyOrganizations: () => Promise<Organization[]>;
-  getOrganization: ({ organizationId: string }) => Promise<Organization>;
-
-  getOrganizationMembers: ({ organizationId: string }) => Promise<Member[]>;
-  addMember: ({ organizationId: string, userId: string }) => Promise<>;
-  removeMember: ({ organizationId: string, userId: string  }) => Promise<>;
-  leaveOrganization: ({ organizationId: string }) => Promise<>;
+  list: () => Promise<Account[]>;
+  invite: ({ userId, accountId, permission }) => Promise<>;
+  revoke: ({ userId, accountId }) => Promise<>;
+  add: ({ accountId, projectKey: string }) => Promise<Account>;
+  remove: ({ accountId, projectKey: string }) => Promise<Account>;
 }
 
 export default AccountService;
+
+/*
+interface ProjectService {
+  create;
+  update;
+  read;
+  delete;
+  share: ({ permission: any }) => Promise<string>; // link
+}
+
+interface Auth {
+  login;
+  logout;
+}
+
+interface UserService {
+  searchUser: ({ search: string }) => Promise<User[]>
+}
+*/
