@@ -8,7 +8,7 @@ interface AccountService {
    * This method provides the list of all accounts of the current user.
    * @return Promise that resolve with an array of Account
    * */
-  list: () => Promise<Account[]>;
+  list: ({}) => Promise<Account[]>;
   /**
    * This method allow to invite another user to collaborate on a specific account.
    * @return Promise that resolve if the invitation was successful
