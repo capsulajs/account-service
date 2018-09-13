@@ -1,0 +1,12 @@
+{
+  "q": "/organizations/create",
+  "sid": 1,
+  "d": {
+    "token": {
+      "issuer": "auth0",
+      "token": "PUT YOUR AUTH0 TOKEN HERE !!!"
+    },
+    "name": "Acme Ltd.",
+    "email": "office@acme.com"
+  }
+}
