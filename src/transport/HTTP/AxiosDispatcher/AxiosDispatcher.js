@@ -2,16 +2,16 @@
 
 import axios from 'axios';
 
-import type { Dispatcher } from '../../api/Dispatcher';
+import { Dispatcher } from 'transport/api';
 import type { HttpMethod } from '../HttpMethod';
 import type { AxiosDispatchParams } from './AxiosDispatchParams';
 
 export class AxiosDispatcher implements Dispatcher {
   dispatcher: any;
 
-  constructor(baseUrl: string) {
+  constructor(params: { baseUrl: string }) {
     this.dispatcher = axios.create({
-      baseURL: baseUrl
+      baseURL: params.baseUrl
     });
   }
 

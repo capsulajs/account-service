@@ -1,6 +1,7 @@
+// @flow
 
-export interface Account {
+export interface Account  {
   accountId: string;
   name: string;
   projects: string[]; // keys
-}
+};

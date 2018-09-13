@@ -1,23 +1,11 @@
 {
-  "dependencies": {
-    "axios": "^0.18.0",
-    "flow": "^0.2.3",
-    "rxjs": "^6.2.2"
-  },
-  "devDependencies": {
-    "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
-    "@babel/preset-flow": "^7.0.0",
-    "cross-env": "^5.2.0",
-    "flow-bin": "^0.80.0",
-    "jsdoc": "~3.5.5"
-  },
   "name": "account-service",
   "description": "Account service",
   "version": "0.0.1",
   "main": "src/AccountService.js",
   "scripts": {
-    "build": "babel src --out-dir lib",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build": "yarn build:commonjs",
     "test": "jest"
   },
   "repository": {
@@ -36,5 +24,19 @@
   "bugs": {
     "url": "https://github.com/capsulajs/account-service/issues"
   },
-  "homepage": "https://github.com/capsulajs/account-service#readme"
+  "homepage": "https://github.com/capsulajs/account-service#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "flow": "^0.2.3",
+    "rxjs": "^6.2.2"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0",
+    "@babel/preset-flow": "^7.0.0",
+    "cross-env": "^5.2.0",
+    "flow-bin": "^0.80.0",
+    "jsdoc": "~3.5.5"
+  }
 }
