@@ -8,6 +8,16 @@
     "build": "yarn build:commonjs",
     "test": "jest"
   },
+  "jest": {
+    "testRegex": ".*\\.test\\.js$",
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "src"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/capsulajs/account-service.git"
@@ -35,8 +45,10 @@
     "@babel/core": "^7.0.0",
     "@babel/plugin-transform-modules-commonjs": "^7.0.0",
     "@babel/preset-flow": "^7.0.0",
+    "babel-jest": "^23.6.0",
     "cross-env": "^5.2.0",
     "flow-bin": "^0.80.0",
+    "jest": "^23.6.0",
     "jsdoc": "~3.5.5"
   }
 }
