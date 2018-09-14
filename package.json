@@ -4,8 +4,9 @@
   "version": "0.0.1",
   "main": "src/AccountService.js",
   "scripts": {
+    "rm:lib": "rimraf lib",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
-    "build": "yarn build:commonjs",
+    "build": "yarn rm:lib && yarn build:commonjs",
     "test": "cross-env BABEL_ENV=jest jest"
   },
   "jest": {
@@ -42,7 +43,7 @@
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
-    "@babel/core": "^7.0.0",
+    "@babel/core": "^7.0.1",
     "@babel/plugin-proposal-class-properties": "^7.0.0",
     "@babel/plugin-transform-modules-commonjs": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
