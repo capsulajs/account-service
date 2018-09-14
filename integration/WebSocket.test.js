@@ -2,12 +2,12 @@
 
 const WebSocket = require('ws');
 
+import { wsUrl } from './constants';
+
 let request = require('./AccountService.data.json');
 request.d.token = require('./Auth0_security_token.json');
 
 console.log(/*'TOKEN: ', */request);
-
-const wsUrl = 'wss://configuration-service-7070.genesis.om2.com/';
 
 describe('A miserable attempt to establish a WebSocket connection', () => {
   it('Test WebSocket', () => {
