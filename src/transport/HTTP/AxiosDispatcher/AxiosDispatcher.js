@@ -15,9 +15,9 @@ export class AxiosDispatcher implements Dispatcher {
     });
   }
 
-  dispatch<T, AxiosDispatchParams, R>(request: T, params?: AxiosDispatchParams): Promise<?R> {
+  dispatch<T, R>(request: T, api: string): Promise<R> {
     const requestConfig = {
-      method: (params && params.method) || 'post',
+      method: 'post',
       data: request,
     }
     return this.dispatcher(requestConfig);
