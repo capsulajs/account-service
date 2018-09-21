@@ -1,36 +1,47 @@
-import { WebSocketDispatcher } from 'transport/WebSocket';
+import { getWebSocketDispatcher } from './utils';
 
-import { wsUrl } from './constants';
+describe('WebsScketDispatcher sanity test', () => {
 
-const request = require('./AccountService.data.json');
-const token = require('./Auth0_security_token.json');
-
-describe('Websocket liveness test', () => {
-
-  const wsDispatcher = new WebSocketDispatcher(wsUrl, token);
+  const wsDispatcher = getWebSocketDispatcher();
+  wsDispatcher.open();
 
   it('Opens a connection', () => {
-    return wsDispatcher
-      .open(wsUrl)
+    return wsDispatcher.open()
       .then(() =>
-        expect(wsDispatcher.getState()).toEqual(1)
+        expect(wsDispatcher.getState()).toEqual('OPEN')
       );
   });
 
   it('Sends a request and receives a response', () => {
-    return wsDispatcher
-      .dispatch(request, '/organizations/create')
-      .then(result =>
-        expect(result).toBeTruthy()
-      );
+    return wsDispatcher.dispatch(
+      {
+        "name": "Acme Ltd.",
+        "email": "office@acme.com"
+      },
+      '/organizations/create'
+    )
+    .then(() =>
+      wsDispatcher.dispatch(
+        {
+          "name": "Acme Ltd.",
+          "email": "office@acme.com"
+        },
+        '/organizations/create'
+      )
+    )
+    .then(result =>
+      expect(result).toBeTruthy()
+    );
   });
 
   it('Closes a connection', () => {
-    return wsDispatcher
-      .close()
+    return wsDispatcher.open()
       .then(() =>
-        expect(wsDispatcher.getState()).toEqual(3)
+        wsDispatcher.close()
+      )
+      .then(() =>
+        expect(wsDispatcher.getState()).toEqual('CLOSED')
       );
   });
 
-})
+});

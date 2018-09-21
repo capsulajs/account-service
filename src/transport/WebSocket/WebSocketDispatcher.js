@@ -1,8 +1,8 @@
 // @flow
 
 /*
-*  Send and receive request serially
-*  next reuqest is sent only after the previous one got its response
+*  Send and receive requests serially
+*  next reuqest is only sent when the previous one got its response
 */
 
 import { Dispatcher } from 'transport/api';
@@ -10,44 +10,35 @@ import type { AuthToken } from 'transport/WebSocket';
 
 const errorMessages = {
   notConnected: 'Not connected!',
-  resourceIsBusy: 'Resource is busy',
+  resourceIsBusy: 'Resource is busy!',
+  unknownState: 'Error due to unknown state',
 };
 
 export class WebSocketDispatcher implements Dispatcher {
   url: string;
-  token: ?AuthToken;
+  token: AuthToken;
   webSocket: any;
 
-  constructor(url: string, token?: AuthToken) {
+  constructor(url: string, token: AuthToken) {
     this.url = url;
-    this.token = token || null;
+    this.token = token;
   }
 
   open(): Promise<null> {
+
+    if (this.getState() === 'OPEN') {
+      return Promise.resolve(null);
+    }
+
     return new Promise((resolve, reject) => {
-
-      try {
-        this.webSocket = new WebSocket(this.url);
-      }
-      catch(error) {
-        reject(error);
-      }
-
+      this.webSocket = new WebSocket(this.url);
       this.webSocket.onopen = () => resolve(null);
       this.webSocket.onerror = error => reject(error);
     });
   }
 
-  getState(): number {
-    return this.webSocket.readyState;
-  }
-
-  dispatch(request: any, api: string): Promise<any> {
+  dispatchInt(request: any, api: string): Promise<any> {
     const { webSocket } = this;
-
-    if (!webSocket) {
-      return Promise.reject(new Error(errorMessages.notConnected));
-    }
 
     if (webSocket.onmessage) {
       return Promise.reject(new Error(errorMessages.resourceIsBusy));
@@ -65,33 +56,55 @@ export class WebSocketDispatcher implements Dispatcher {
     return new Promise((resolve, reject) => {
       webSocket.onmessage = message => {
         webSocket.onmessage = null;
-
-        let result = null;
-        try {
-          result = JSON.parse(message.data).d;
-        }
-        catch(error) {
-          reject(error);
-        }
-        resolve(result);
+        resolve(JSON.parse(message.data).d);
       }
-
       webSocket.onerror = error => reject(error);
       webSocket.send(JSON.stringify(fullRequest));
     })
   }
 
-  close(): Promise<null> {
-    const { webSocket } = this;
+  dispatch(request: any, api: string): Promise<any> {
 
-    if (!webSocket) {
-      return Promise.reject(new Error(errorMessages.notConnected));
+    switch (this.getState()) {
+      case 'OPEN': return this.dispatchInt(request, api);
+      case 'NONE':
+      case 'CLOSED':
+        return this.open().then(() =>
+          this.dispatchInt(request, api)
+        );
+      default: return Promise.reject(errorMessages.unknownState);
+    };
+  }
+
+  close(): Promise<null> {
+    const state = this.getState();
+
+    if (state === 'NONE' || state === 'CLOSED') {
+      return Promise.resolve(null);
     }
+
+    const { webSocket } = this;
 
     return new Promise((resolve, reject) => {
       webSocket.onclose = () => resolve(null);
       webSocket.onerror = error => reject(error);
       webSocket.close();
     });
+  }
+
+  getState(): string {
+    const { webSocket } = this;
+
+    if (!webSocket) {
+      return 'NONE';
+    }
+
+    switch (webSocket.readyState) {
+      case 0: return 'CONNECTING';
+      case 1: return 'OPEN';
+      case 2: return 'CLOSING';
+      case 3: return 'CLOSED';
+      default: return 'UNKNOWN';
+    }
   }
 };
