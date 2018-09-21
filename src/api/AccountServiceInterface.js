@@ -2,10 +2,29 @@
 
 import { Account } from './Account';
 
+import type {
+  CreateOrganizationRequest,
+  CreateOrganizationResponse,
+} from './types';
+
 /**
  * Service to get and manage user accounts
  */
 export interface AccountServiceInterface {
+  /**
+   * Creates an Organization
+   * */
+   createOrganization(request: CreateOrganizationRequest): Promise<CreateOrganizationResponse>;
+   /**
+    * Deletes an Organization
+    * */
+   deleteOrganization(request: CreateOrganizationRequest): CreateOrganizationResponse {
+     return this.dispatcher.dispatch(
+       request,
+       '/organizations/delete',
+     );
+   }
+
   /**
    * This method provides the list of all accounts of the current user.
    * @return Promise that resolve with an array of Account

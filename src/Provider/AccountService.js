@@ -11,6 +11,20 @@ export class AccountService implements AccountServiceInterface {
     this.dispatcher = dispatcher;
   }
 
+  createOrganization(request: CreateOrganizationRequest): CreateOrganizationResponse {
+    return this.dispatcher.dispatch(
+      request,
+      '/organizations/create',
+    );
+  }
+
+  deleteOrganization(request: CreateOrganizationRequest): CreateOrganizationResponse {
+    return this.dispatcher.dispatch(
+      request,
+      '/organizations/delete',
+    );
+  }
+
   list(request: {}): Promise<Account[]> {
     return Promise.resolve([]);
   }
