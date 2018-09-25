@@ -5,6 +5,8 @@ import { Account } from './Account';
 import type {
   CreateOrganizationRequest,
   CreateOrganizationResponse,
+  DeleteOrganizationRequest,
+  DeleteOrganizationResponse,
 } from './types';
 
 /**
@@ -18,12 +20,7 @@ export interface AccountServiceInterface {
    /**
     * Deletes an Organization
     * */
-   deleteOrganization(request: CreateOrganizationRequest): CreateOrganizationResponse {
-     return this.dispatcher.dispatch(
-       request,
-       '/organizations/delete',
-     );
-   }
+   deleteOrganization(request: DeleteOrganizationRequest): Promise<DeleteOrganizationResponse>;
 
   /**
    * This method provides the list of all accounts of the current user.

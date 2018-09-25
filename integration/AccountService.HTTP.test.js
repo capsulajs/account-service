@@ -1,5 +1,6 @@
-import { AxiosDispatcher } from 'transport/HTTP/AxiosDispatcher';
+import {
+  getHttpDispatcher,
+  runAccountServiceTests,
+} from './utils';
 
-import { runAccountServiceTests } from './utils';
-
-runAccountServiceTests(getWebSocketDispatcher());
+runAccountServiceTests(getHttpDispatcher());

@@ -1,4 +1,6 @@
 export { wsUrl } from './constants';
-export { randomString } from './common';
-export { getWebSocketDispatcher } from './webSocket';
+export {
+  getWebSocketDispatcher,
+  getHttpDispatcher,
+} from './transports';
 export { runAccountServiceTests } from './runAccountServiceTests';

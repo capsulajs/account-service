@@ -6,7 +6,6 @@
 */
 
 import { Dispatcher } from 'transport/api';
-import type { AuthToken } from 'transport/WebSocket';
 
 const errorMessages = {
   notConnected: 'Not connected!',
@@ -16,12 +15,11 @@ const errorMessages = {
 
 export class WebSocketDispatcher implements Dispatcher {
   url: string;
-  token: AuthToken;
   webSocket: any;
+  responseData: any;
 
-  constructor(url: string, token: AuthToken) {
+  constructor(url: string) {
     this.url = url;
-    this.token = token;
   }
 
   open(): Promise<null> {
@@ -47,20 +45,26 @@ export class WebSocketDispatcher implements Dispatcher {
     const fullRequest = {
       q: api,
       sid: 1,
-      d: {
-        token: this.token,
-        ...request
-      },
+      d: request,
     };
 
+    this.responseData = null;
+
     return new Promise((resolve, reject) => {
+
       webSocket.onmessage = message => {
-        webSocket.onmessage = null;
-        resolve(JSON.parse(message.data).d);
+        const parsedResponse = JSON.parse(message.data);
+
+        this.responseData = parsedResponse.d || this.responseData;
+
+        if (parsedResponse.sig) {
+          webSocket.onmessage = null;
+          resolve(this.responseData);
+        }
       }
       webSocket.onerror = error => reject(error);
       webSocket.send(JSON.stringify(fullRequest));
-    })
+    });
   }
 
   dispatch(request: any, api: string): Promise<any> {
@@ -76,7 +80,7 @@ export class WebSocketDispatcher implements Dispatcher {
     };
   }
 
-  close(): Promise<null> {
+  finalize(): Promise<null> {
     const state = this.getState();
 
     if (state === 'NONE' || state === 'CLOSED') {
@@ -87,7 +91,7 @@ export class WebSocketDispatcher implements Dispatcher {
 
     return new Promise((resolve, reject) => {
       webSocket.onclose = () => resolve(null);
-      webSocket.onerror = error => reject(error);
+      webSocket.onerror = () => reject();
       webSocket.close();
     });
   }

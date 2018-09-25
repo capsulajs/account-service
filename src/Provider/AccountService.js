@@ -2,6 +2,13 @@
 
 import { Account, AccountServiceInterface } from 'api';
 
+import type {
+  CreateOrganizationRequest,
+  CreateOrganizationResponse,
+  DeleteOrganizationRequest,
+  DeleteOrganizationResponse,
+} from 'api/types';
+
 import { Dispatcher } from 'transport/api';
 
 export class AccountService implements AccountServiceInterface {
@@ -11,14 +18,14 @@ export class AccountService implements AccountServiceInterface {
     this.dispatcher = dispatcher;
   }
 
-  createOrganization(request: CreateOrganizationRequest): CreateOrganizationResponse {
+  createOrganization(request: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
     return this.dispatcher.dispatch(
       request,
       '/organizations/create',
     );
   }
 
-  deleteOrganization(request: CreateOrganizationRequest): CreateOrganizationResponse {
+  deleteOrganization(request: DeleteOrganizationRequest): Promise<DeleteOrganizationResponse> {
     return this.dispatcher.dispatch(
       request,
       '/organizations/delete',

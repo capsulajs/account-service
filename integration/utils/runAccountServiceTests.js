@@ -1,8 +1,13 @@
 import { AccountService } from 'Provider';
 
-import { randomString } from '.';
+const token = require('./Auth0_security_token.json');
 
-// jest.setTimeout(10000);
+import {
+  organizationName,
+  organizationEmail,
+} from './constants';
+
+jest.setTimeout(30000);
 
 export const runAccountServiceTests  = dispatcher => {
 
@@ -10,21 +15,31 @@ export const runAccountServiceTests  = dispatcher => {
 
   describe(`Sanity Test of the Account Service using ${dispatcherName}`, () => {
 
-    const companyName = randomString(32);
-    const companyEmail = 'office@' + companyName + '.com';
     const accService = new AccountService(dispatcher);
 
-    it(`Create Organization using ${dispatcherName}`, () => {
+    it(`Create and Delete an Organization using ${dispatcherName}`, () => {
       return accService.createOrganization({
-        name: companyName,
-        email: companyEmail
-      }).then(res => {
-        console.log('CREATE ORGANIZATION: ', res);
-        return expect(res).toBeTruthy();
-      }).
-      catch(err => {
-        console.log('ERROR: ', err);
-        return expect(res).toBeTruthy();
+        token: token,
+        name: organizationName,
+        email: organizationEmail,
+      })
+      .then(response => {
+        console.log('CREATE ORGANIZATION:\n', response);
+        const { id } = response;
+        if (id) {
+          return accService.deleteOrganization({
+            token: token,
+            organizationId: id,
+          });
+        } else {
+          dispatcher.finalize && dispatcher.finalize();
+          return expect(id).toBeTruthy();
+        }
+      })
+      .then(response => {
+        console.log('DELETE ORGANIZATION:\n', response);
+        dispatcher.finalize && dispatcher.finalize();
+        return expect(response.deleted).toBe(true);
       });
     });
 

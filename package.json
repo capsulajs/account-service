@@ -17,7 +17,8 @@
     "moduleDirectories": [
       "node_modules",
       "src"
-    ]
+    ],
+    "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
