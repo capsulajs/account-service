@@ -1,4 +1,4 @@
 node_modules
 lib
-*security_token*
+Auth0*
 flow-typed
