@@ -1,134 +1,127 @@
 // @flow
 
-// Type of the authentication Token
-export type Token = {
+// Interface of the authentication Token
+export interface Token {
   issuer: string,
   token: string,
 };
 
-// Type of the Organization Member
-export type OrganizationMember = {
+// Interface of the Organization Member
+export interface OrganizationMember {
   id: string;
   role: string;
 }
 
-// Type of the OrganizationInfo
-export type OrganizationInfo = {
+// Interface of the Api Key
+export interface ApiKey {
+  key: string,
+  name: string,
+  claims: { [string]: string },
+};
+
+// Interface of the OrganizationInfo
+export interface OrganizationInfo {
+  apiKeys: ApiKey[],
   id: string,
   name: string,
   email: string,
   ownerId: string,
 };
 
-// Type of the Create Organization Request
-export type CreateOrganizationRequest = {
+// Interface of the Create Organization Request
+export interface CreateOrganizationRequest {
   token: Token;
   name: string,
   email: string;
 };
 
-// Type of the Create Organization Response
-export type CreateOrganizationResponse = {
-  apiKeys: string[],
-  id: string,
-  name: string,
-  email: string,
-  ownerId: string,
+// Interface of the Create Organization Response
+export interface CreateOrganizationResponse extends OrganizationInfo {
 };
 
-// Type of the Update Organization Request
-export type UpdateOrganizationRequest = {
+// Interface of the Update Organization Request
+export interface UpdateOrganizationRequest {
   token: Token;
   name: string,
   email: string,
   organizationId: string,
-}
+};
 
-// Type of the Update Organization Response
-export type UpdateOrganizationResponse = {
-  id: string,
-  name: string,
-  apiKeys: string[],
-  email: string,
-  ownerId: string,
-}
+// Interface of the Update Organization Response
+export interface UpdateOrganizationResponse extends OrganizationInfo {
+};
 
-// Type of the Get Organization Request
-export type GetOrganizationRequest = {
-  token: Token;
-  organizationId: string,
-}
-
-// Type of the Get Organization Response
-export type GetOrganizationResponse = {
-  id: string,
-  name: string,
-  apiKeys: string[],
-  email: string,
-  ownerId: string,
-}
-
-// Type of the Delete Organization Request
-export type DeleteOrganizationRequest = {
+// Interface of the Get Organization Request
+export interface GetOrganizationRequest {
   token: Token;
   organizationId: string,
 };
 
-// Type of the Delete Organization Response
-export type DeleteOrganizationResponse = {
+// Interface of the Get Organization Response
+export interface GetOrganizationResponse extends OrganizationInfo {
+};
+
+// Interface of the Delete Organization Request
+export interface DeleteOrganizationRequest {
+  token: Token;
+  organizationId: string,
+};
+
+// Interface of the Delete Organization Response
+export interface DeleteOrganizationResponse {
   deleted: boolean,
   organizationId: string,
 };
 
-// Type of the Get Organization Members Request
-export type GetOrganizationMembersRequest = {
+// Interface of the Get Organization Members Request
+export interface GetOrganizationMembersRequest {
   token: Token;
   organizationId: string,
 };
 
-// Type of the Get Organization Members Response
-export type GetOrganizationMembersResponse = {
+// Interface of the Get Organization Members Response
+export interface GetOrganizationMembersResponse {
   members: OrganizationMember[],
 };
 
-// Type of the Invite Organization Member Request
-export type InviteOrganizationMemberRequest = {
+// Interface of the Invite Organization Member Request
+export interface InviteOrganizationMemberRequest {
   token: Token;
   organizationId: string;
   userId: string;
 };
 
-// Type of the Invite Organization Member Response
-export type InviteOrganizationMemberResponse = {
+// Interface of the Invite Organization Member Response
+export interface InviteOrganizationMemberResponse {
 };
 
-// Type of the Kickout Organization Member Request
-export type KickoutOrganizationMemberRequest = {
+// Interface of the Kickout Organization Member Request
+export interface KickoutOrganizationMemberRequest {
   token: Token;
   organizationId: string;
   userId: string;
 };
 
-// Type of the Kickout Organization Member Response
-export type KickoutOrganizationMemberResponse = {
+// Interface of the Kickout Organization Member Response
+export interface KickoutOrganizationMemberResponse {
 };
 
-// Type of the Get Membership Request
-export type GetMembershipRequest = {
+// Interface of the Get Membership Request
+export interface GetMembershipRequest {
   token: Token;
 };
 
-// Type of the Get Membership Response
-export type GetMembershipResponse = {
+// Interface of the Get Membership Response
+export interface GetMembershipResponse {
   organizations: OrganizationInfo[];
 };
 
-// Type of the Leave Organization Request
-export type LeaveOrganizationRequest = {
+// Interface of the Leave Organization Request
+export interface LeaveOrganizationRequest {
   token: Token;
   organizationId: string;
 };
 
-// Type of the Leave Organization Response
-export type LeaveOrganizationResponse = {
+// Interface of the Leave Organization Response
+export interface LeaveOrganizationResponse {
 };
