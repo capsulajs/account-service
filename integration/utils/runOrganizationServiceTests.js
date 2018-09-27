@@ -19,92 +19,113 @@ export const runOrganizationServiceTests  = dispatcher => {
     const orgService = new OrganizationService(dispatcher);
 
     it(`Create and Delete an Organization using ${dispatcherName}`, async () => {
+      expect.assertions(4);
 
       let response  = await orgService.createOrganization({
         token: token,
         name: organizationName,
         email: organizationEmail,
       });
-      console.log('CREATE ORGANIZATION:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      const orgId = response.id;
+      expect(orgId).toBeTruthy();
+      console.log('Organization created: ', orgId);
 
-      let orgId = response.id;
       response = await orgService.updateOrganization({
         token: token,
         name: 'Next-gen-Acme',
         email: 'office@next-get-acme.com',
         organizationId: orgId,
       });
-      console.log('UPDATE ORGANIZATION:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(response.name).toBe('Next-gen-Acme');
+      console.log('Organization updated: ', response.name);
 
       response = await orgService.getOrganization({
         token: token,
         organizationId: orgId,
       });
-      console.log('GET ORGANIZATION:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(response.id).toBe(orgId);
+      console.log('Gotten Organization: ', response.id);
 
       response = await orgService.deleteOrganization({
         token: token,
         organizationId: orgId,
       });
-      console.log('DELETE ORGANIZATION:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(response.deleted).toBe(true);
+      console.log('Delete Organization: ', response);
 
       dispatcher.finalize && dispatcher.finalize();
-      return expect(response.deleted).toBe(true);
     });
 
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
+      expect.assertions(7);
 
       let response = await orgService.createOrganization({
         token: token,
         name: organizationName,
         email: organizationEmail,
       });
-      console.log('CREATE ORGANIZATION:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      const orgId = response.id;
+      expect(orgId).toBeTruthy();
+      console.log('Organization created: ', orgId);
 
-      let orgId = response.id;
       response = await orgService.getOrganizationMembers({
         token: token,
         organizationId: orgId,
       });
-      console.log('GET ORGANIZATION MEMBERS:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(response.members.length).toBe(0);
+      console.log('Organization Members count: :', response.members.length);
 
       response = await orgService.inviteOrganizationMember({
         token: token,
         organizationId: orgId,
         userId: userId,
       });
-      console.log('INVITE ORGANIZATION MEMBER:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(response).toEqual({});
+      console.log('Member was invited');
 
       response = await orgService.getOrganizationMembers({
         token: token,
         organizationId: orgId,
       });
-      console.log('GET ORGANIZATION MEMBERS:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(response.members.length).toBe(1);
+      console.log('Organization Members count: :', response.members.length);
 
       response = await orgService.kickoutOrganizationMember({
         token: token,
         organizationId: orgId,
         userId: userId,
       });
-      console.log('KICK OUT ORGANIZATION MEMBER:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(response).toEqual({});
+      console.log('Member was kicked  out');
 
       response = await orgService.getOrganizationMembers({
         token: token,
         organizationId: orgId,
       });
-      console.log('GET ORGANIZATION MEMBERS:\n', response);
+      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(response.members.length).toBe(0);
+      console.log('Organization Members count: :', response.members.length);
 
       response = await orgService.deleteOrganization({
         token: token,
         organizationId: orgId,
       });
-      console.log('DELETE ORGANIZATION:\n', response);
+      expect(response.deleted).toBe(true);
+      console.log('Organization deleted: ', response.deleted);
 
       dispatcher.finalize && dispatcher.finalize();
-      expect(response.deleted).toBe(true);
     });
 
-    it.only(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
+    it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
       expect.assertions(5);
 
       let response = await orgService.createOrganization({
