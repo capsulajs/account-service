@@ -21,6 +21,10 @@ import type {
   GetMembershipResponse,
   LeaveOrganizationRequest,
   LeaveOrganizationResponse,
+  AddOrganizationApiKeyRequest,
+  AddOrganizationApiKeyResponse,
+  DeleteOrganizationApiKeyRequest,
+  DeleteOrganizationApiKeyResponse,
 } from 'api/OrganizationServiceTypes';
 
 import { Dispatcher } from 'transport/api';
@@ -94,4 +98,18 @@ export class OrganizationService implements OrganizationServiceInterface {
       '/organizations/leaveOrganization',
     );
   };
+
+  addOrganizationApiKey(request: AddOrganizationApiKeyRequest): Promise<AddOrganizationApiKeyResponse> {
+    return this.dispatcher.dispatch(
+      request,
+      '/organizations/addOrganizationApiKey',
+    );
+  };
+
+  deleteOrganizationApiKey(request: DeleteOrganizationApiKeyRequest): Promise<DeleteOrganizationApiKeyResponse> {
+    return this.dispatcher.dispatch(
+      request,
+      '/organizations/deleteOrganizationApiKey',
+    );
+  }
 };

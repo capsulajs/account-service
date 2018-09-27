@@ -12,11 +12,15 @@ export interface OrganizationMember {
   role: string;
 }
 
+export interface Claims {
+  [string]: string,
+};
+
 // Interface of the Api Key
 export interface ApiKey {
   key: string,
   name: string,
-  claims: { [string]: string },
+  claims: Claims,
 };
 
 // Interface of the OrganizationInfo
@@ -124,4 +128,27 @@ export interface LeaveOrganizationRequest {
 
 // Interface of the Leave Organization Response
 export interface LeaveOrganizationResponse {
+};
+
+// Interface of the Add Organization API Key Request
+export interface AddOrganizationApiKeyRequest {
+  token: Token;
+  organizationId: string;
+  apiKeyName: string;
+  claims: Claims,
+};
+
+// Interface of the Add Organization API Key Response
+export interface AddOrganizationApiKeyResponse extends OrganizationInfo {
+};
+
+// Interface of the Delete Organization API Key Request
+export interface DeleteOrganizationApiKeyRequest {
+  token: Token;
+  organizationId: string;
+  apiKeyName: string;
+};
+
+// Interface of the Delete Organization API Key Response
+export interface DeleteOrganizationApiKeyResponse extends OrganizationInfo {
 };

@@ -19,6 +19,10 @@ import type {
   GetMembershipResponse,
   LeaveOrganizationRequest,
   LeaveOrganizationResponse,
+  AddOrganizationApiKeyRequest,
+  AddOrganizationApiKeyResponse,
+  DeleteOrganizationApiKeyRequest,
+  DeleteOrganizationApiKeyResponse,
 } from './OrganizationServiceTypes';
 
 // Service to manage CreateOrganizations
@@ -51,4 +55,10 @@ export interface OrganizationServiceInterface {
 
   // Leave Organization
   leaveOrganization(request: LeaveOrganizationRequest): Promise<LeaveOrganizationResponse>;
+
+  // Add Organization Api Key
+  addOrganizationApiKey(request: AddOrganizationApiKeyRequest): Promise<AddOrganizationApiKeyResponse>;
+
+  // Delete Organization Api Key
+  deleteOrganizationApiKey(request: DeleteOrganizationApiKeyRequest): Promise<DeleteOrganizationApiKeyResponse>;
 };
