@@ -1,10 +1,6 @@
 // @flow
 
-// Interface of the authentication Token
-export interface Token {
-  issuer: string,
-  token: string,
-};
+import type { Token } from './Token';
 
 // Interface of the Organization Member
 export interface OrganizationMember {

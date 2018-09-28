@@ -1,18 +1,64 @@
 // @flow
 
-import { Account, AccountServiceInterface } from 'api';
+import { Token } from 'api/Token';
+import { ErrorResponse } from 'api/ErrorResponse';
+import {
+  Account, // TO BE REMOVED
+  ListRequest,
+  ListResponse,
+  CreateAccountRequest,
+  CreateAccountResponse,
+  DeleteAccountRequest,
+  DeleteAccountResponse,
+} from 'api/AccountServiceTypes';
 
+import { AccountServiceInterface } from 'api/AccountServiceInterface';
 import { Dispatcher } from 'transport/api';
+import { OrganizationService } from './OrganizationService';
 
 export class AccountService implements AccountServiceInterface {
-  dispatcher: Dispatcher;
+  orgService: OrganizationService;
+  token: Token;
 
-  constructor(dispatcher: Dispatcher) {
-    this.dispatcher = dispatcher;
+  constructor(dispatcher: Dispatcher, token: Token) {
+    this.orgService = new OrganizationService(dispatcher);
+    this.token = token;
   }
 
-  list(request: {}): Promise<Account[]> {
-    return Promise.resolve([]);
+  list(request: ListRequest): Promise<ListResponse> {
+    return this.orgService.getMembership({ token: this.token })
+      .then(response => ({
+        accounts: (response.organizations || []).map(org => ({
+          accountId: org.id,
+          name: org.name,
+        }))
+      }));
+  }
+
+  createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse | ErrorResponse> {
+    return this.orgService.createOrganization({
+      ...request,
+      token: this.token
+    }).then(response =>
+      typeof response.id === 'string' ?
+        {
+          accountId: response.id,
+          name: response.name,
+          email: response.email,
+        } :
+        response
+    );
+  }
+
+  deleteAccount(request: DeleteAccountRequest): Promise<DeleteAccountResponse> {
+    return this.orgService.deleteOrganization({
+      organizationId: request.accountId,
+      token: this.token,
+    })
+    .then(response => ({
+      accountId: response.organizationId,
+      deleted: response.deleted
+    }));
   }
 
   invite(request: { userId: string, accountId: string, permission: string }): Promise<null> {
