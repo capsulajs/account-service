@@ -12,9 +12,8 @@ export class AxiosDispatcher implements Dispatcher {
   }
 
   dispatch(request: any, api: string): Promise<any> {
-    // console.log('HTTP DISPATCH', request, api);
     return axios.post(this.baseUrl + api, request)
-      .then(response => { /*console.log('HTTP RESPONSE:', response);*/ return response.data;})
-      .catch(error => { /*console.log('HTTP ERROR: ', error);*/ return error.response.data;});
+      .then(response => response.data)
+      .catch(error => Promise.reject(error.response.data));
   }
 };

@@ -1,6 +1,5 @@
 // @flow
 
-import { ErrorResponse } from './ErrorResponse';
 import {
   Account, // TO BE REMOVED
   ListRequest,
@@ -24,7 +23,7 @@ export interface AccountServiceInterface {
    * This method allow to create an account.
    * @return Promise that resolves to Account info
    * */
-  createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse | ErrorResponse>;
+  createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse>;
   /**
    * This method allow to delete an account.
    * @return Promise that resolves when Account is deleted

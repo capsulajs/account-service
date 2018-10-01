@@ -1,7 +1,5 @@
 // @flow
 
-import { ErrorResponse } from './ErrorResponse';
-
 import {
   CreateOrganizationRequest,
   CreateOrganizationResponse,
@@ -32,7 +30,7 @@ import {
 export interface OrganizationServiceInterface {
 
   // Creates an Organization
-  createOrganization(request: CreateOrganizationRequest): Promise<CreateOrganizationResponse | ErrorResponse>;
+  createOrganization(request: CreateOrganizationRequest): Promise<CreateOrganizationResponse>;
 
   // Updates an Organization
   updateOrganization(request: UpdateOrganizationRequest): Promise<UpdateOrganizationResponse>;

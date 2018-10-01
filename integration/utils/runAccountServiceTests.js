@@ -11,15 +11,25 @@ export const runAccountServiceTests  = dispatcher => {
     it.only('Create and delete an account', async () => {
       expect.assertions(1);
 
-      const accService = new AccountService(dispatcher, token);
-      let response = await accService.createAccount({
-        name: 'ACME-ACCOUNT',
-        email: 'office@acme.net',
-      });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      const accountId = response.accountId;
-      expect(accountId).toBeTruthy();
-      console.log('Account created: ', accountId);
+      let accService = null;
+
+      try {
+        accService = new AccountService(dispatcher, token);
+
+        let response = await accService.createAccount({
+          name: 'ACME-ACCOUNT',
+          email: 'office@acme.net',
+        });
+        const accountId = response.accountId;
+        expect(accountId).toBeTruthy();
+        console.log('Account created: ', accountId);
+      }
+      catch (error) {
+        console.log('CAUGHT ERROR:\n', error);
+      }
+      finally {
+        dispatcher.finalize && dispatcher.finalize();
+      }
     });
 
     it('List accounts of a user with no accounts', async () => {

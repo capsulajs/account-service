@@ -2,8 +2,6 @@
 
 import { OrganizationServiceInterface } from 'api/OrganizationServiceInterface';
 
-import { ErrorResponse } from 'api/ErrorResponse';
-
 import {
   CreateOrganizationRequest,
   CreateOrganizationResponse,
@@ -38,7 +36,7 @@ export class OrganizationService implements OrganizationServiceInterface {
     this.dispatcher = dispatcher;
   }
 
-  createOrganization(request: CreateOrganizationRequest): Promise<CreateOrganizationResponse | ErrorResponse> {
+  createOrganization(request: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
     return this.dispatcher.dispatch(
       request,
       '/organizations/create',

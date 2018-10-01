@@ -59,7 +59,11 @@ export class WebSocketDispatcher implements Dispatcher {
 
         if (parsedResponse.sig) {
           webSocket.onmessage = null;
-          resolve(this.responseData);
+
+          const { responseData } = this;
+          responseData.errorCode ?
+            reject(responseData) :
+            resolve(responseData);
         }
       }
       webSocket.onerror = error => reject(error);

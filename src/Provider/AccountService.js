@@ -1,7 +1,6 @@
 // @flow
 
 import { Token } from 'api/Token';
-import { ErrorResponse } from 'api/ErrorResponse';
 import {
   Account, // TO BE REMOVED
   ListRequest,
@@ -35,19 +34,16 @@ export class AccountService implements AccountServiceInterface {
       }));
   }
 
-  createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse | ErrorResponse> {
+  createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse> {
     return this.orgService.createOrganization({
       ...request,
       token: this.token
-    }).then(response =>
-      typeof response.id === 'string' ?
-        {
-          accountId: response.id,
-          name: response.name,
-          email: response.email,
-        } :
-        response
-    );
+    }).
+    then(response => ({
+      accountId: response.id,
+      name: response.name,
+      email: response.email,
+    }));
   }
 
   deleteAccount(request: DeleteAccountRequest): Promise<DeleteAccountResponse> {
