@@ -9,29 +9,29 @@ export interface OrganizationMember {
 }
 
 export interface Claims {
-  [string]: string,
+  [string]: string;
 };
 
 // Interface of the Api Key
 export interface ApiKey {
-  key: string,
-  name: string,
-  claims: Claims,
+  key: string;
+  name: string;
+  claims: Claims;
 };
 
 // Interface of the OrganizationInfo
 export interface OrganizationInfo {
-  apiKeys: ApiKey[],
-  id: string,
-  name: string,
-  email: string,
-  ownerId: string,
+  apiKeys: ApiKey[];
+  id: string;
+  name: string;
+  email: string;
+  ownerId: string;
 };
 
 // Interface of the Create Organization Request
 export interface CreateOrganizationRequest {
   token: Token;
-  name: string,
+  name: string;
   email: string;
 };
 
@@ -42,9 +42,9 @@ export interface CreateOrganizationResponse extends OrganizationInfo {
 // Interface of the Update Organization Request
 export interface UpdateOrganizationRequest {
   token: Token;
-  name: string,
-  email: string,
-  organizationId: string,
+  name: string;
+  email: string;
+  organizationId: string;
 };
 
 // Interface of the Update Organization Response
@@ -54,7 +54,7 @@ export interface UpdateOrganizationResponse extends OrganizationInfo {
 // Interface of the Get Organization Request
 export interface GetOrganizationRequest {
   token: Token;
-  organizationId: string,
+  organizationId: string;
 };
 
 // Interface of the Get Organization Response
@@ -64,24 +64,24 @@ export interface GetOrganizationResponse extends OrganizationInfo {
 // Interface of the Delete Organization Request
 export interface DeleteOrganizationRequest {
   token: Token;
-  organizationId: string,
+  organizationId: string;
 };
 
 // Interface of the Delete Organization Response
 export interface DeleteOrganizationResponse {
-  deleted: boolean,
-  organizationId: string,
+  deleted: boolean;
+  organizationId: string;
 };
 
 // Interface of the Get Organization Members Request
 export interface GetOrganizationMembersRequest {
   token: Token;
-  organizationId: string,
+  organizationId: string;
 };
 
 // Interface of the Get Organization Members Response
 export interface GetOrganizationMembersResponse {
-  members: OrganizationMember[],
+  members: OrganizationMember[];
 };
 
 // Interface of the Invite Organization Member Request
@@ -131,7 +131,7 @@ export interface AddOrganizationApiKeyRequest {
   token: Token;
   organizationId: string;
   apiKeyName: string;
-  claims: Claims,
+  claims: Claims;
 };
 
 // Interface of the Add Organization API Key Response

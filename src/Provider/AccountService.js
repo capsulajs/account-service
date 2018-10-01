@@ -9,6 +9,8 @@ import {
   CreateAccountResponse,
   DeleteAccountRequest,
   DeleteAccountResponse,
+  InviteRequest,
+  InviteResponse,
 } from 'api/AccountServiceTypes';
 
 import { AccountServiceInterface } from 'api/AccountServiceInterface';
@@ -57,27 +59,17 @@ export class AccountService implements AccountServiceInterface {
     }));
   }
 
-  invite(request: { userId: string, accountId: string, permission: string }): Promise<null> {
-    return Promise.resolve(null);
+  invite(request: InviteRequest): Promise<InviteResponse> {
+    return this.orgService.inviteOrganizationMember({
+      organizationId: request.accountId,
+      userId: request.userId,
+    });
   }
 
   revoke(request: { userId: string, accountId: string }): Promise<null> {
-    return Promise.resolve(null);
-  }
-
-  add(request: { accountId: string, projectKey: string }): Promise<Account> {
-    return Promise.resolve({
-      accountId: '',
-      name: '',
-      projects: []
+    return this.orgService.kickoutOrganizationMember({
+      organizationId: request.accountId,
+      userId: request.userId,
     });
   }
-
-  remove(request: { accountId: string, projectKey: string }): Promise<Account> {
-    return Promise.resolve({
-      accountId: '',
-      name: '',
-      projects: []
-    });
-  }
-}
+};

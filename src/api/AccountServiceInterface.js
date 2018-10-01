@@ -8,6 +8,10 @@ import {
   CreateAccountResponse,
   DeleteAccountRequest,
   DeleteAccountResponse,
+  InviteRequest,
+  InviteResponse,
+  RevokeRequest,
+  RevokeResponse,
 } from './AccountServiceTypes';
 
 /**
@@ -33,20 +37,20 @@ export interface AccountServiceInterface {
    * This method allow to invite another user to collaborate on a specific account.
    * @return Promise that resolve if the invitation was successful
    * */
-  invite(request: { userId: string, accountId: string, permission: string }): Promise<null>;
+  invite(request: InviteRequest): Promise<InviteResponse>;
   /**
    * This method allow to revoke access of a user to a specific account.
    * @return Promise that resolve if the revocation was successful
    * */
-  revoke(request: { userId: string, accountId: string }): Promise<null>;
+  revoke(request: RevokeRequest): Promise<RevokeResponse>;
   /**
    * This method allow to add a project to an existing account
    * @return Promise that resolve if the project was successfully added to the account
    * */
-  add(request: { accountId: string, projectKey: string }): Promise<Account>;
+  // add(request: { accountId: string, projectKey: string }): Promise<Account>;
   /**
    * This method allow to remove a project from an existing account
    * @return Promise that resolve if the project was successfully removed from the account
    * */
-  remove(request: { accountId: string, projectKey: string }): Promise<Account>;
+  // remove(request: { accountId: string, projectKey: string }): Promise<Account>;
 };
