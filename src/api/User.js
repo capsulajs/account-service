@@ -1,3 +1,5 @@
+// @flow
+
 export interface User {
   id: number;
   email: string;
@@ -14,4 +16,4 @@ type Role = 'owner' | 'member';
 
 export interface Member extends User {
   role: Role;
-}
+};
