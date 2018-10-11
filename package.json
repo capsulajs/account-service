@@ -12,7 +12,8 @@
   "jest": {
     "testRegex": ".*\\.test\\.js$",
     "moduleFileExtensions": [
-      "js"
+      "js",
+      "json"
     ],
     "moduleDirectories": [
       "node_modules",

@@ -3,6 +3,8 @@ import {
   ConfigurationService,
 } from 'Provider';
 
+import { getAuth0Token } from './getAuth0Token';
+
 import {
   organizationName,
   organizationEmail,
@@ -10,10 +12,10 @@ import {
   configRepo,
 } from './constants';
 
-const token = require('./Auth0_security_token.json');
-const { userId } = require('./Auth0_security_userid.json');
+// const token = require('./Auth0_security_token');
+const { userId } = require('./Auth0_security_userid');
 
-jest.setTimeout(30000);
+jest.setTimeout(120000);
 
 export const runConfigurationServiceTests  = dispatcher => {
 
@@ -27,9 +29,15 @@ export const runConfigurationServiceTests  = dispatcher => {
     it('Create an Organization and a Configuration for it', async () => {
       expect.assertions(3);
 
+      const { data: { access_token: auth0Token } } = await getAuth0Token();
+      const token = {
+        issuer: 'auth0',
+        token: auth0Token,
+      };
+
       try {
         let response  = await orgService.createOrganization({
-          token: token,
+          token,
           name: organizationName,
           email: organizationEmail,
         });
@@ -38,15 +46,18 @@ export const runConfigurationServiceTests  = dispatcher => {
         console.log('Organization created: ', orgId);
 
         response = await orgService.addOrganizationApiKey({
-          token: token,
+          token,
           organizationId: orgId,
           apiKeyName,
           claims: { role: 'Owner' },
         });
         const apiKey = response.apiKeys[0].key;
         expect(apiKey).toBeTruthy();
-        console.log('Api Key created:\n', response);
-        console.log('Api Key created: ', apiKey);
+        console.log('Api Key created:\n', apiKey);
+
+        console.log('Lets wait: ', new Date());
+        await new Promise(resolve => setTimeout(resolve, 90000));
+        console.log('Waited: ', new Date());
 
         response = await configService.createRepository({
           token: apiKey,
