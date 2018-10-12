@@ -7,6 +7,8 @@ import {
   CreateRepositoryResponse,
   FetchRequest,
   FetchResponse,
+  EntriesRequest,
+  EntriesResponse,
   SaveRequest,
   SaveResponse,
   DeleteRequest,
@@ -36,7 +38,7 @@ export class ConfigurationService implements ConfigurationServiceInterface {
     );
   }
 
-  entries(request: FetchRequest): Promise<FetchResponse> {
+  entries(request: EntriesRequest): Promise<EntriesResponse> {
     return this.dispatcher.dispatch(
       request,
       '/io.scalecube.configuration.api.ConfigurationService/entries'

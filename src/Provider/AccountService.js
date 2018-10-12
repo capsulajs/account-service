@@ -61,13 +61,15 @@ export class AccountService implements AccountServiceInterface {
 
   invite(request: InviteRequest): Promise<InviteResponse> {
     return this.orgService.inviteOrganizationMember({
+      token: this.token,
       organizationId: request.accountId,
       userId: request.userId,
     });
   }
 
-  revoke(request: { userId: string, accountId: string }): Promise<null> {
+  revoke(request: { userId: string, accountId: string }): Promise<InviteResponse> {
     return this.orgService.kickoutOrganizationMember({
+      token: this.token,
       organizationId: request.accountId,
       userId: request.userId,
     });

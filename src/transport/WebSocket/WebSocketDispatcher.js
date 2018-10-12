@@ -48,7 +48,6 @@ export class WebSocketDispatcher implements Dispatcher {
       d: request,
     };
 
-    console.log('WEBSOCKET FULL REQUEST:\n', fullRequest);
     this.responseData = null;
 
     return new Promise((resolve, reject) => {

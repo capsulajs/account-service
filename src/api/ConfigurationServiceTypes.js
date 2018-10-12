@@ -2,6 +2,14 @@
 import { Token } from './Token';
 
 /**
+ *  Interface for the Entries (key/value pair)
+ */
+ interface Entry {
+   key: string;
+   value: any;
+ }
+
+/**
  * Request of the Create Configuration Repository
  * @Token  - Authentication token
  * @repository - The Name of the Configuration Repository
@@ -30,9 +38,23 @@ export interface FetchRequest {
 /**
  * Response of the Fetch Entry
  */
-export interface FetchResponse {
+export interface FetchResponse extends Entry {
+};
+
+/**
+ * Request of the Entries
+ */
+export interface EntriesRequest {
+  token: string;
+  repository: string;
   key: string;
-  value: any;
+};
+
+/**
+ * Response of the Entries
+ */
+export interface EntriesResponse {
+  entries: Entry[];
 };
 
 /**

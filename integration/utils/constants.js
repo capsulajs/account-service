@@ -7,4 +7,4 @@ export const organizationName = 'Acme';
 export const organizationEmail = 'office@acme.com';
 
 export const apiKeyName = 'ACME-OWNER-API-KEY';
-export const configRepo = 'ACME-CONFIG-REPO';
+export const configRepo = 'CONFIG-REPO';

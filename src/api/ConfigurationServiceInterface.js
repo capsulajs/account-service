@@ -5,6 +5,8 @@ import {
   CreateRepositoryResponse,
   FetchRequest,
   FetchResponse,
+  EntriesRequest,
+  EntriesResponse,
   SaveRequest,
   SaveResponse,
   DeleteRequest,
@@ -27,7 +29,7 @@ export interface ConfigurationServiceInterface {
   /**
    * Fetch Repository Entries
    */
-  entries(request: FetchRequest): Promise<FetchResponse>;
+  entries(request: EntriesRequest): Promise<EntriesResponse>;
 
   /**
    * Save Repository Entry
