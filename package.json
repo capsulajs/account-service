@@ -7,7 +7,8 @@
     "rm:lib": "rimraf lib",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build": "yarn rm:lib && yarn build:commonjs",
-    "test": "cross-env BABEL_ENV=jest jest"
+    "test": "cross-env BABEL_ENV=jest jest",
+    "jsdoc": "jsdoc -r src/ -c jsdoc_conf.js -d ./docs"
   },
   "jest": {
     "testRegex": ".*\\.test\\.js$",
@@ -54,6 +55,7 @@
     "flow-bin": "^0.80.0",
     "jest": "^23.6.0",
     "jsdoc": "~3.5.5",
+    "jsdoc-babel": "^0.5.0",
     "ws": "^6.0.0"
   }
 }
