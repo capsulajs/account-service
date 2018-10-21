@@ -9,7 +9,8 @@ import {
   SaveResponse,
   DeleteRequest,
   DeleteResponse,
-}
+} from './ConfigurationServiceTypes';
+
 // Scalecube Configuration Service
 export interface ConfigurationServiceInterface {
 
