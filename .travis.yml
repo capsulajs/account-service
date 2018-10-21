@@ -8,7 +8,6 @@ branches:
     - /.*/
 
 before_install:
-  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
   - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   - echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
@@ -16,9 +15,9 @@ install:
   - sudo apt update && sudo apt install -y yarn
   - /usr/bin/yarn install --production=false
   # - npm run test
+  - npm run flow
 
 script:
-  - npm run flow
   - npm run jsdoc
   - npm run build
 
