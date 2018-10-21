@@ -12,11 +12,12 @@ install:
   # - npm run test
 
 script:
+  - npm run flow
   - npm run jsdoc
   - npm run build
 
 after_success:
-  - bash build/deploy.sh
+  - bash build/deploy.sh "capsula/account-service"
 
 notifications:
   email:
