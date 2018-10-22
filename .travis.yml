@@ -14,12 +14,12 @@ before_install:
 install:
   - sudo apt update && sudo apt install -y yarn
   - /usr/bin/yarn install --production=false
-  # - npm run test
-  - npm run flow
+  # - yarn test
+  - yarn flow
 
 script:
-  - npm run jsdoc
-  - npm run build
+  - yarn jsdoc
+  - yarn build
 
 after_success:
   - bash build/deploy.sh "capsula/account-service"
