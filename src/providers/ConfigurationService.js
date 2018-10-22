@@ -1,6 +1,6 @@
 // @flow
 
-import { ConfigurationServiceInterface } from 'api/ConfigurationServiceInterface';
+import { ConfigurationServiceInterface } from '../api/ConfigurationServiceInterface';
 
 import {
   CreateRepositoryRequest,
@@ -13,9 +13,9 @@ import {
   SaveResponse,
   DeleteRequest,
   DeleteResponse,
-} from 'api/ConfigurationServiceTypes';
+} from '../api/ConfigurationServiceTypes';
 
-import { Dispatcher } from 'transport/api';
+import { Dispatcher } from '../transport/api';
 
 export class ConfigurationService implements ConfigurationServiceInterface {
   dispatcher: Dispatcher;

@@ -1,6 +1,6 @@
 // @flow
 
-import { OrganizationServiceInterface } from 'api/OrganizationServiceInterface';
+import { OrganizationServiceInterface } from '../api/OrganizationServiceInterface';
 
 import {
   CreateOrganizationRequest,
@@ -25,9 +25,9 @@ import {
   AddOrganizationApiKeyResponse,
   DeleteOrganizationApiKeyRequest,
   DeleteOrganizationApiKeyResponse,
-} from 'api/OrganizationServiceTypes';
+} from '../api/OrganizationServiceTypes';
 
-import { Dispatcher } from 'transport/api';
+import { Dispatcher } from '../transport/api';
 
 export class OrganizationService implements OrganizationServiceInterface {
   dispatcher: Dispatcher;

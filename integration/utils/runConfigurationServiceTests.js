@@ -1,7 +1,7 @@
 import {
   OrganizationService,
   ConfigurationService,
-} from 'Provider';
+} from 'providers';
 
 import { getAuth0Token } from './getAuth0Token';
 

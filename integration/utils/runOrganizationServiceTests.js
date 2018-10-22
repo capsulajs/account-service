@@ -1,4 +1,4 @@
-import { OrganizationService } from 'Provider';
+import { OrganizationService } from 'providers';
 
 const token = require('./Auth0_security_token.json');
 const { userId } = require('./Auth0_security_userid.json');
