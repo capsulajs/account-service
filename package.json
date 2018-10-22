@@ -2,7 +2,7 @@
   "name": "account-service",
   "description": "Account service",
   "version": "0.0.1",
-  "main": "src/AccountService.js",
+  "main": "lib/index.js",
   "scripts": {
     "rm:lib": "rimraf lib",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
