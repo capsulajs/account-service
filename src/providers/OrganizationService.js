@@ -38,78 +38,78 @@ export class OrganizationService implements OrganizationServiceInterface {
 
   createOrganization(request: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/create',
+      request,
     );
   }
 
   updateOrganization(request: UpdateOrganizationRequest): Promise<UpdateOrganizationResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/updateOrganization',
+      request,
     );
   }
 
   getOrganization(request: GetOrganizationRequest): Promise<GetOrganizationResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/getOrganization',
+      request,
     );
   }
 
   deleteOrganization(request: DeleteOrganizationRequest): Promise<DeleteOrganizationResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/delete',
+      request,
     );
   }
 
   getOrganizationMembers(request: GetOrganizationMembersRequest): Promise<GetOrganizationMembersResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/getOrganizationMembers',
+      request,
     );
   }
 
   inviteOrganizationMember(request: InviteOrganizationMemberRequest): Promise<InviteOrganizationMemberResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/inviteMember',
+      request,
     );
   };
 
   kickoutOrganizationMember(request: KickoutOrganizationMemberRequest): Promise<KickoutOrganizationMemberResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/kickoutMember',
+      request,
     );
   };
 
   getMembership(request: GetMembershipRequest): Promise<GetMembershipResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/getUserOrganizationsMembership',
+      request,
     );
   };
 
   leaveOrganization(request: LeaveOrganizationRequest): Promise<LeaveOrganizationResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/leaveOrganization',
+      request,
     );
   };
 
   addOrganizationApiKey(request: AddOrganizationApiKeyRequest): Promise<AddOrganizationApiKeyResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/addOrganizationApiKey',
+      request,
     );
   };
 
   deleteOrganizationApiKey(request: DeleteOrganizationApiKeyRequest): Promise<DeleteOrganizationApiKeyResponse> {
     return this.dispatcher.dispatch(
-      request,
       '/organizations/deleteOrganizationApiKey',
+      request,
     );
   }
 };

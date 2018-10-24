@@ -35,7 +35,7 @@ export class WebSocketDispatcher implements Dispatcher {
     });
   }
 
-  dispatchInt(request: any, api: string): Promise<any> {
+  dispatchInt(api: string, request: any): Promise<any> {
     const { webSocket } = this;
 
     if (webSocket.onmessage) {
@@ -71,14 +71,14 @@ export class WebSocketDispatcher implements Dispatcher {
     });
   }
 
-  dispatch(request: any, api: string): Promise<any> {
+  dispatch( api: string, request: any): Promise<any> {
 
     switch (this.getState()) {
-      case 'OPEN': return this.dispatchInt(request, api);
+      case 'OPEN': return this.dispatchInt(api, request);
       case 'NONE':
       case 'CLOSED':
         return this.open().then(() =>
-          this.dispatchInt(request, api)
+          this.dispatchInt( api, request)
         );
       default: return Promise.reject(errorMessages.unknownState);
     };

@@ -1,6 +1,6 @@
 // @flow
 
 export interface Dispatcher {
-  dispatch(request: any, api: string): Promise<any>;
+  dispatch(api: string, request: any): Promise<any>;
   +finalize?: () => Promise<null>;
 }

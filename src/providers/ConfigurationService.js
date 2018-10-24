@@ -26,36 +26,36 @@ export class ConfigurationService implements ConfigurationServiceInterface {
 
   createRepository(request: CreateRepositoryRequest): Promise<CreateRepositoryResponse> {
     return this.dispatcher.dispatch(
+      '/io.scalecube.configuration.api.ConfigurationService/createRepository',
       request,
-      '/io.scalecube.configuration.api.ConfigurationService/createRepository'
     );
   }
 
   fetch(request: FetchRequest): Promise<FetchResponse> {
     return this.dispatcher.dispatch(
+      '/io.scalecube.configuration.api.ConfigurationService/fetch',
       request,
-      '/io.scalecube.configuration.api.ConfigurationService/fetch'
     );
   }
 
   entries(request: EntriesRequest): Promise<EntriesResponse> {
     return this.dispatcher.dispatch(
+      '/io.scalecube.configuration.api.ConfigurationService/entries',
       request,
-      '/io.scalecube.configuration.api.ConfigurationService/entries'
     );
   }
 
   save(request: SaveRequest): Promise<SaveResponse> {
     return this.dispatcher.dispatch(
+      '/io.scalecube.configuration.api.ConfigurationService/save',
       request,
-      '/io.scalecube.configuration.api.ConfigurationService/save'
     );
   }
 
   delete(request: DeleteRequest): Promise<DeleteResponse> {
     return this.dispatcher.dispatch(
+      '/io.scalecube.configuration.api.ConfigurationService/delete',
       request,
-      '/io.scalecube.configuration.api.ConfigurationService/delete'
     );
   };
 };

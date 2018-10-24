@@ -11,7 +11,8 @@ export class AxiosDispatcher implements Dispatcher {
     this.baseUrl = baseUrl;
   }
 
-  dispatch(request: any, api: string): Promise<any> {
+  dispatch(api: string, request: any): Promise<any> {
+    console.log('AXIOS:\n', api, '\n', request);
     return axios.post(this.baseUrl + api, request)
       .then(response => response.data)
       .catch(error => Promise.reject(error.response.data));
