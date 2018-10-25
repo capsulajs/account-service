@@ -13,16 +13,13 @@ before_install:
 
 install:
   - sudo apt update && sudo apt install -y yarn
-  - /usr/bin/yarn install --production=false
-  # - yarn test
+  - yarn install --production=false
+  - yarn test
   - yarn flow
 
 script:
   - yarn jsdoc
   - yarn build
-
-after_success:
-  - bash build/deploy.sh "capsula/account-service"
 
 notifications:
   email:
