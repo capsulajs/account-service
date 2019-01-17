@@ -1,14 +1,17 @@
 import axios from 'axios';
 
-const auth0Request = require('./Auth0_token_request');
+const CLIENT_ID = 'FhUqfTk9Gr1225o2Smwb4CVOw2602RLH';
+const CLIENT_SECRET = 'WUtQBZrfZW6OGOmqNL2ER_3vNpJJjjMOUFSGGrTac7Ux4bL_mPbEsvo8vxfYb7GH';
+const CLIENT_DOMAIN = 'kach95.auth0.com';
 
-const mapResponse = ({ status, statusText, data }) => ({ status, statusText, data });
+const data = {
+  client_id: CLIENT_ID,
+  client_secret: CLIENT_SECRET,
+  audience: `https://${CLIENT_DOMAIN}/api/v2/`,
+  grant_type: 'client_credentials'
+};
 
-export const getAuth0Token = () =>
-  axios.post(
-    'https://taras-shedenko.eu.auth0.com/oauth/token',
-    auth0Request,
-    { headers: { 'content-type': 'application/json' } }
-  )
-  .then(response => mapResponse(response))
-  .catch(error => Promise.reject(mapResponse(error.response)));
+export const getAuth0Token = () => axios
+  .post(`https://${CLIENT_DOMAIN}/oauth/token`, data)
+  .then(response => response.data.access_token)
+  .catch(error => Promise.reject(error.response));

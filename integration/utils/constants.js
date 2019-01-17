@@ -8,3 +8,8 @@ export const organizationEmail = 'office@acme.com';
 
 export const apiKeyName = 'ACME-OWNER-API-KEY';
 export const configRepo = 'CONFIG-REPO';
+
+export const account = {
+  name: 'ACME-ACCOUNT',
+  email: 'office@acme.net'
+};

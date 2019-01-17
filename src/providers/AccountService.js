@@ -2,7 +2,6 @@
 
 import { Token } from 'api/Token';
 import {
-  Account, // TO BE REMOVED
   ListRequest,
   ListResponse,
   CreateAccountRequest,
@@ -11,6 +10,8 @@ import {
   DeleteAccountResponse,
   InviteRequest,
   InviteResponse,
+  RevokeRequest,
+  RevokeResponse
 } from 'api/AccountServiceTypes';
 
 import { AccountServiceInterface } from 'api/AccountServiceInterface';
@@ -18,16 +19,16 @@ import { Dispatcher } from 'transport/api';
 import { OrganizationService } from './OrganizationService';
 
 export class AccountService implements AccountServiceInterface {
-  orgService: OrganizationService;
+  organizationService: OrganizationService;
   token: Token;
 
   constructor(dispatcher: Dispatcher, token: Token) {
-    this.orgService = new OrganizationService(dispatcher);
+    this.organizationService = new OrganizationService(dispatcher);
     this.token = token;
   }
 
   list(request: ListRequest): Promise<ListResponse> {
-    return this.orgService.getMembership({ token: this.token })
+    return this.organizationService.getMembership({ token: this.token })
       .then(response => ({
         accounts: (response.organizations || []).map(org => ({
           accountId: org.id,
@@ -35,13 +36,15 @@ export class AccountService implements AccountServiceInterface {
         }))
       }));
   }
-
+ 
   createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse> {
-    return this.orgService.createOrganization({
+    return this.organizationService.createOrganization({
       ...request,
-      token: this.token
-    }).
-    then(response => ({
+      token: {
+        issuer: 'Auth0',
+        token: this.token
+      }
+    }).then(response => ({
       accountId: response.id,
       name: response.name,
       email: response.email,
@@ -49,26 +52,25 @@ export class AccountService implements AccountServiceInterface {
   }
 
   deleteAccount(request: DeleteAccountRequest): Promise<DeleteAccountResponse> {
-    return this.orgService.deleteOrganization({
+    return this.organizationService.deleteOrganization({
       organizationId: request.accountId,
       token: this.token,
-    })
-    .then(response => ({
+    }).then(response => ({
       accountId: response.organizationId,
       deleted: response.deleted
     }));
   }
 
   invite(request: InviteRequest): Promise<InviteResponse> {
-    return this.orgService.inviteOrganizationMember({
+    return this.organizationService.inviteOrganizationMember({
       token: this.token,
       organizationId: request.accountId,
       userId: request.userId,
     });
   }
 
-  revoke(request: { userId: string, accountId: string }): Promise<InviteResponse> {
-    return this.orgService.kickoutOrganizationMember({
+  revoke(request: RevokeRequest): Promise<RevokeResponse> {
+    return this.organizationService.kickoutOrganizationMember({
       token: this.token,
       organizationId: request.accountId,
       userId: request.userId,

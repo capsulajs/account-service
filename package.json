@@ -34,9 +34,6 @@
   ],
   "author": "Stephane Benayoun (https://github.com/stephanebenayoun)",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/capsulajs/account-service/issues"
-  },
   "homepage": "https://github.com/capsulajs/account-service#readme",
   "dependencies": {
     "axios": "^0.18.0",

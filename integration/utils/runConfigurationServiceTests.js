@@ -1,10 +1,5 @@
-import {
-  OrganizationService,
-  ConfigurationService,
-} from 'providers';
-
+import { OrganizationService, ConfigurationService } from 'providers';
 import { getAuth0Token } from './getAuth0Token';
-
 import {
   organizationName,
   organizationEmail,
@@ -12,33 +7,25 @@ import {
   configRepo,
 } from './constants';
 
-const { userId } = require('./Auth0_security_userid');
-
 jest.setTimeout(60000);
 
 export const runConfigurationServiceTests  = dispatcher => {
-
-  const dispatcherName = dispatcher.constructor.name;
-
-  describe(`Sanity Test of the Configuration Service using ${dispatcherName}`, () => {
-
+  describe(`Sanity Test of the Configuration Service using ${dispatcher.constructor.name}`, () => {
     const orgService = new OrganizationService(dispatcher);
     const configService = new ConfigurationService(dispatcher);
 
     it('Create an Organization and a Configuration for it', async () => {
       expect.assertions(10);
 
-      const { data: { access_token: auth0Token } } = await getAuth0Token();
-      console.log('Auth0 token:\n', auth0Token);
-
-      const token = {
-        issuer: 'auth0',
-        token: auth0Token,
-      };
+      const token = await getAuth0Token();
+      console.log('Auth0 token:\n', token);
 
       try {
         let response  = await orgService.createOrganization({
-          token,
+          token: {
+            token,
+            issuer: 'Auth0'
+          },
           name: organizationName,
           email: organizationEmail,
         });

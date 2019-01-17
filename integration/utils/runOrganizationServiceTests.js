@@ -1,17 +1,9 @@
 import { OrganizationService } from 'providers';
-
-const token = require('./Auth0_security_token.json');
-const { userId } = require('./Auth0_security_userid.json');
-
-import {
-  organizationName,
-  organizationEmail,
-} from './constants';
+import { organizationName, organizationEmail } from './constants';
 
 jest.setTimeout(30000);
 
 export const runOrganizationServiceTests  = dispatcher => {
-
   const dispatcherName = dispatcher.constructor.name;
 
   describe(`Sanity Test of the Organization Service using ${dispatcherName}`, () => {
