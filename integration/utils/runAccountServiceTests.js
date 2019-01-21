@@ -8,17 +8,15 @@ export const runAccountServiceTests = dispatcher => {
   describe('Sanity test for the Account Service', () => {
     it('Create and delete an account', async () => {
       expect.assertions(2);
-
-      let service = null;
+  
+      const token = await getAuth0Token();
+      const service = new AccountService(dispatcher, token);
 
       try {
-        const token = await getAuth0Token();
-        service = new AccountService(dispatcher, token);
         let response = await service.createAccount(account);
         const { accountId } = response;
         expect(accountId).toBeTruthy();
         console.log('Account created: ', accountId);
-        // Delete the previously created Account
         response = await service.deleteAccount({ accountId });
         expect(response.deleted).toBe(true);
         console.log('Account deleted: ', response.deleted);
@@ -28,6 +26,6 @@ export const runAccountServiceTests = dispatcher => {
         dispatcher.finalize && dispatcher.finalize();
       }
     });
-
+ 
   });
 };

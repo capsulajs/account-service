@@ -1,39 +1,36 @@
 import { OrganizationService, ConfigurationService } from 'providers';
 import { getAuth0Token } from './getAuth0Token';
 import {
-  organizationName,
-  organizationEmail,
   apiKeyName,
   configRepo,
+  organization
 } from './constants';
 
 jest.setTimeout(60000);
 
 export const runConfigurationServiceTests  = dispatcher => {
   describe(`Sanity Test of the Configuration Service using ${dispatcher.constructor.name}`, () => {
-    const orgService = new OrganizationService(dispatcher);
+    const organizationService = new OrganizationService(dispatcher);
     const configService = new ConfigurationService(dispatcher);
 
     it('Create an Organization and a Configuration for it', async () => {
       expect.assertions(10);
 
       const token = await getAuth0Token();
-      console.log('Auth0 token:\n', token);
-
+ 
       try {
-        let response  = await orgService.createOrganization({
+        let response  = await organizationService.createOrganization({
           token: {
             token,
             issuer: 'Auth0'
           },
-          name: organizationName,
-          email: organizationEmail,
+          ...organization
         });
         const orgId = response.id;
         expect(orgId).toBeTruthy();
         console.log('Organization created:\n', orgId);
 
-        response = await orgService.addOrganizationApiKey({
+        response = await organizationService.addOrganizationApiKey({
           token,
           organizationId: orgId,
           apiKeyName,
@@ -155,17 +152,15 @@ export const runConfigurationServiceTests  = dispatcher => {
 
 
         // Remove the Organization created
-        response = await orgService.deleteOrganization({
+        response = await organizationService.deleteOrganization({
           token: token,
           organizationId: orgId,
         });
         expect(response.deleted).toBe(true);
         console.log('Organization deleted:\n', response.deleted);
-      }
-      catch (error) {
+      } catch (error) {
         console.log('ERROR:\n', error);
-      }
-      finally {
+      } finally {
         dispatcher.finalize && dispatcher.finalize();
       }
 

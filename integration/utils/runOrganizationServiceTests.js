@@ -1,5 +1,6 @@
 import { OrganizationService } from 'providers';
-import { organizationName, organizationEmail } from './constants';
+import { organization } from './constants';
+import { getAuth0Token } from './getAuth0Token';
 
 jest.setTimeout(30000);
 
@@ -8,22 +9,19 @@ export const runOrganizationServiceTests  = dispatcher => {
 
   describe(`Sanity Test of the Organization Service using ${dispatcherName}`, () => {
 
-    const orgService = new OrganizationService(dispatcher);
+    const organizationService = new OrganizationService(dispatcher);
 
     it(`Create and Delete an Organization using ${dispatcherName}`, async () => {
       expect.assertions(4);
-
-      let response  = await orgService.createOrganization({
-        token: token,
-        name: organizationName,
-        email: organizationEmail,
-      });
+      
+      const token = await getAuth0Token();
+      let response  = await organizationService.createOrganization({ token, ...organization });
       response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
       const orgId = response.id;
       expect(orgId).toBeTruthy();
       console.log('Organization created: ', orgId);
 
-      response = await orgService.updateOrganization({
+      response = await organizationService.updateOrganization({
         token: token,
         name: 'Next-gen-Acme',
         email: 'office@next-get-acme.com',
@@ -33,7 +31,7 @@ export const runOrganizationServiceTests  = dispatcher => {
       expect(response.name).toBe('Next-gen-Acme');
       console.log('Organization updated: ', response.name);
 
-      response = await orgService.getOrganization({
+      response = await organizationService.getOrganization({
         token: token,
         organizationId: orgId,
       });
@@ -41,7 +39,7 @@ export const runOrganizationServiceTests  = dispatcher => {
       expect(response.id).toBe(orgId);
       console.log('Gotten Organization: ', response.id);
 
-      response = await orgService.deleteOrganization({
+      response = await organizationService.deleteOrganization({
         token: token,
         organizationId: orgId,
       });
@@ -54,27 +52,23 @@ export const runOrganizationServiceTests  = dispatcher => {
 
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
       expect.assertions(7);
-
-      let response = await orgService.createOrganization({
-        token: token,
-        name: organizationName,
-        email: organizationEmail,
-      });
+  
+      const token = await getAuth0Token();
+      let response = await organizationService.createOrganization({ token, ...organization });
       response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
       const orgId = response.id;
       expect(orgId).toBeTruthy();
       console.log('Organization created: ', orgId);
 
-      response = await orgService.getOrganizationMembers({
-        token: token,
-        organizationId: orgId,
-      });
+      response = await organizationService.getOrganizationMembers({ token, organizationId: orgId });
       response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
       expect(response.members.length).toBe(0);
       console.log('Organization Members count: :', response.members.length);
+      
+      console.log('MEMBERS', response.members);
 
-      response = await orgService.inviteOrganizationMember({
-        token: token,
+      response = await organizationService.inviteOrganizationMember({
+        token,
         organizationId: orgId,
         userId: userId,
       });
@@ -83,15 +77,15 @@ export const runOrganizationServiceTests  = dispatcher => {
       console.log('Member was invited');
 
       response = await orgService.getOrganizationMembers({
-        token: token,
+        token,
         organizationId: orgId,
       });
       response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
       expect(response.members.length).toBe(1);
       console.log('Organization Members count: :', response.members.length);
 
-      response = await orgService.kickoutOrganizationMember({
-        token: token,
+      response = await organizationService.kickoutOrganizationMember({
+        token,
         organizationId: orgId,
         userId: userId,
       });
@@ -99,15 +93,15 @@ export const runOrganizationServiceTests  = dispatcher => {
       expect(response).toEqual({});
       console.log('Member was kicked  out');
 
-      response = await orgService.getOrganizationMembers({
-        token: token,
+      response = await organizationService.getOrganizationMembers({
+        token,
         organizationId: orgId,
       });
       response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
       expect(response.members.length).toBe(0);
       console.log('Organization Members count: :', response.members.length);
 
-      response = await orgService.deleteOrganization({
+      response = await organizationService.deleteOrganization({
         token: token,
         organizationId: orgId,
       });
@@ -119,25 +113,19 @@ export const runOrganizationServiceTests  = dispatcher => {
 
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
       expect.assertions(5);
-
-      let response = await orgService.createOrganization({
-        token: token,
-        name: organizationName,
-        email: organizationEmail,
-      });
+  
+      const token = await getAuth0Token();
+      let response = await organizationService.createOrganization({ token, ...organization });
       const orgId = response.id;
       expect(orgId).toBeTruthy();
       console.log('Organization created: ', orgId);
 
-      response = await orgService.getOrganization({
-        token: token,
-        organizationId: orgId,
-      });
+      response = await organizationService.getOrganization({ token, organizationId: orgId });
       expect(response.apiKeys.length).toBe(0);
       console.log('Api Keys count before addition :', response.apiKeys.length);
 
-      response = await orgService.addOrganizationApiKey({
-        token: token,
+      response = await organizationService.addOrganizationApiKey({
+        token,
         organizationId: orgId,
         apiKeyName: 'TEST-API-KEY',
         claims: { role: 'Admin' }
@@ -145,22 +133,19 @@ export const runOrganizationServiceTests  = dispatcher => {
       expect(response.apiKeys.length).toBe(1);
       console.log('Api Keys count after addition: ', response.apiKeys.length);
 
-      response = await orgService.deleteOrganizationApiKey({
-        token: token,
+      response = await organizationService.deleteOrganizationApiKey({
+        token,
         organizationId: orgId,
         apiKeyName: 'TEST-API-KEY',
       });
       expect(response.apiKeys.length).toBe(0);
       console.log('Api Keys count after deletion: ', response.apiKeys.length);
 
-      response = await orgService.deleteOrganization({
-        token: token,
-        organizationId: orgId,
-      });
+      response = await organizationService.deleteOrganization({ token, organizationId: orgId });
       expect(response.deleted).toBe(true);
       console.log('Organization deleted: ', response.deleted);
 
       dispatcher.finalize && dispatcher.finalize();
     });
   });
-}
+};
