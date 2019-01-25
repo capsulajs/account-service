@@ -11,21 +11,11 @@ export const runAccountServiceTests = dispatcher => {
   
       const token = await getAuth0Token();
       const service = new AccountService(dispatcher, token);
-
-      try {
-        let response = await service.createAccount(account);
-        const { accountId } = response;
-        expect(accountId).toBeTruthy();
-        console.log('Account created: ', accountId);
-        response = await service.deleteAccount({ accountId });
-        expect(response.deleted).toBe(true);
-        console.log('Account deleted: ', response.deleted);
-      } catch (error) {
-        console.log('CAUGHT ERROR:\n', error);
-      } finally {
-        dispatcher.finalize && dispatcher.finalize();
-      }
+      const { accountId } = await service.createAccount(account);
+      expect(accountId).toBeTruthy();
+      const { deleted } = await service.deleteAccount({ accountId });
+      expect(deleted).toBe(true);
+      dispatcher.finalize && dispatcher.finalize();
     });
- 
   });
 };

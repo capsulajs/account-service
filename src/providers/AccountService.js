@@ -54,7 +54,10 @@ export class AccountService implements AccountServiceInterface {
   deleteAccount(request: DeleteAccountRequest): Promise<DeleteAccountResponse> {
     return this.organizationService.deleteOrganization({
       organizationId: request.accountId,
-      token: this.token,
+      token: {
+        issuer: 'Auth0',
+        token: this.token
+      }
     }).then(response => ({
       accountId: response.organizationId,
       deleted: response.deleted

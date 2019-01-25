@@ -23,7 +23,6 @@ export class WebSocketDispatcher implements Dispatcher {
   }
 
   open(): Promise<null> {
-
     if (this.getState() === 'OPEN') {
       return Promise.resolve(null);
     }
@@ -41,52 +40,45 @@ export class WebSocketDispatcher implements Dispatcher {
     if (webSocket.onmessage) {
       return Promise.reject(new Error(errorMessages.resourceIsBusy));
     }
-
-    const fullRequest = {
-      q: api,
-      sid: 1,
-      d: request,
-    };
-
+    
     this.responseData = null;
-
+    
     return new Promise((resolve, reject) => {
-
       webSocket.onmessage = message => {
-        const parsedResponse = JSON.parse(message.data);
+        const response = JSON.parse(message.data);
 
-        this.responseData = parsedResponse.d || this.responseData;
+        this.responseData = response.d || this.responseData;
 
-        if (parsedResponse.sig) {
+        if (response.sig) {
           webSocket.onmessage = null;
-
           const { responseData } = this;
-          responseData.errorCode ?
-            reject(responseData) :
-            resolve(responseData);
+          responseData.errorCode
+            ? reject(responseData)
+            : resolve(responseData);
         }
-      }
+      };
+      
       webSocket.onerror = error => reject(error);
-      webSocket.send(JSON.stringify(fullRequest));
+      webSocket.send(JSON.stringify({
+        q: api,
+        sid: 1,
+        d: request,
+      }));
     });
   }
 
-  dispatch( api: string, request: any): Promise<any> {
-
+  dispatch(api: string, request: any): Promise<any> {
     switch (this.getState()) {
       case 'OPEN': return this.dispatchInt(api, request);
       case 'NONE':
-      case 'CLOSED':
-        return this.open().then(() =>
-          this.dispatchInt( api, request)
-        );
+      case 'CLOSED': return this.open().then(() => this.dispatchInt(api, request));
       default: return Promise.reject(errorMessages.unknownState);
-    };
+    }
   }
 
   finalize(): Promise<null> {
     const state = this.getState();
-
+    
     if (state === 'NONE' || state === 'CLOSED') {
       return Promise.resolve(null);
     }

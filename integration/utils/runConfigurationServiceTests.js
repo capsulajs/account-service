@@ -1,10 +1,7 @@
 import { OrganizationService, ConfigurationService } from 'providers';
 import { getAuth0Token } from './getAuth0Token';
-import {
-  apiKeyName,
-  configRepo,
-  organization
-} from './constants';
+import { apiKeyName, configRepo, organization } from './constants';
+import { wrapToken } from './utils/utils';
 
 jest.setTimeout(60000);
 
@@ -17,24 +14,18 @@ export const runConfigurationServiceTests  = dispatcher => {
       expect.assertions(10);
 
       const token = await getAuth0Token();
- 
+  
       try {
-        let response  = await organizationService.createOrganization({
-          token: {
-            token,
-            issuer: 'Auth0'
-          },
-          ...organization
-        });
+        let response  = await organizationService.createOrganization({ ...wrapToken(token), ...organization });
         const orgId = response.id;
         expect(orgId).toBeTruthy();
         console.log('Organization created:\n', orgId);
-
+ 
         response = await organizationService.addOrganizationApiKey({
-          token,
           organizationId: orgId,
           apiKeyName,
           claims: { role: 'Owner' },
+          ...wrapToken(token)
         });
         const apiKey = response.apiKeys[0].key;
         expect(apiKey).toBeTruthy();
@@ -153,7 +144,7 @@ export const runConfigurationServiceTests  = dispatcher => {
 
         // Remove the Organization created
         response = await organizationService.deleteOrganization({
-          token: token,
+          ...wrapToken(token),
           organizationId: orgId,
         });
         expect(response.deleted).toBe(true);
