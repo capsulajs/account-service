@@ -1,6 +1,6 @@
 jest.setTimeout(30000);
 
-import { AccountService } from 'Provider';
+import { AccountService } from 'providers';
 
 const token = require('./Auth0_security_token.json');
 
