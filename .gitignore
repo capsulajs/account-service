@@ -1,6 +1,5 @@
 node_modules
 lib
-Auth0*
 flow-typed
 yarn-error.log
 .idea
