@@ -14,7 +14,7 @@ import {
   RevokeResponse
 } from 'api/AccountServiceTypes';
 import { AccountServiceInterface } from 'api/AccountServiceInterface';
-import { Dispatcher } from 'transport/api';
+import { Dispatcher } from '@capsulajs/capsulajs-transport-providers';
 import { OrganizationService } from './OrganizationService';
 
 export class AccountService implements AccountServiceInterface {

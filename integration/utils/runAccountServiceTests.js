@@ -14,7 +14,9 @@ export const runAccountServiceTests = dispatcher => {
       expect(accountId).toBeTruthy();
       const { deleted } = await service.deleteAccount({ accountId });
       expect(deleted).toBe(true);
-      dispatcher.finalize && dispatcher.finalize();
+      if (dispatcher.finalize) {
+        await dispatcher.finalize();
+      }
     });
   });
 };

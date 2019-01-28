@@ -1,7 +1,7 @@
 global.WebSocket = require('ws');
 
-import { WebSocketDispatcher } from 'transport/WebSocket';
-import { AxiosDispatcher } from 'transport/HTTP';
+import { WebSocketDispatcher } from '@capsulajs/capsulajs-transport-providers';
+import { AxiosDispatcher } from '@capsulajs/capsulajs-transport-providers';
 import { wsUrl, httpUrl } from './constants';
 
 export const getWebSocketDispatcher = () => new WebSocketDispatcher(wsUrl);

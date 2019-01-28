@@ -25,7 +25,8 @@
   "license": "MIT",
   "homepage": "https://github.com/capsulajs/account-service#readme",
   "dependencies": {
-    "@capsulajs/capsulajs-transport-providers": "^0.1.0"
+    "@capsulajs/capsulajs-transport-providers": "^0.1.0",
+    "dotenv": "^6.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
@@ -34,6 +35,7 @@
     "@babel/plugin-transform-modules-commonjs": "^7.0.0",
     "@babel/preset-env": "^7.0.0",
     "@babel/preset-flow": "^7.0.0",
+    "axios": "^0.18.0",
     "babel-core": "^7.0.0-0",
     "babel-jest": "^23.6.0",
     "cross-env": "^5.2.0",
