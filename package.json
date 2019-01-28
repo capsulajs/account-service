@@ -25,8 +25,7 @@
   "license": "MIT",
   "homepage": "https://github.com/capsulajs/account-service#readme",
   "dependencies": {
-    "@capsulajs/capsulajs-transport-providers": "^0.1.0",
-    "dotenv": "^6.2.0"
+    "@capsulajs/capsulajs-transport-providers": "^0.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
