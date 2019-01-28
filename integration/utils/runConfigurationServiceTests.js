@@ -14,147 +14,142 @@ export const runConfigurationServiceTests  = dispatcher => {
       expect.assertions(10);
 
       const token = await getAuth0Token();
+      
+      let response  = await organizationService.createOrganization({
+        ...organization,
+        ...wrapToken(token)
+      });
+      const organizationId = response.id;
+      expect(organizationId).toBeTruthy();
   
-      try {
-        let response  = await organizationService.createOrganization({ ...wrapToken(token), ...organization });
-        const orgId = response.id;
-        expect(orgId).toBeTruthy();
-        console.log('Organization created:\n', orgId);
- 
-        response = await organizationService.addOrganizationApiKey({
-          organizationId: orgId,
-          apiKeyName,
-          claims: { role: 'Owner' },
-          ...wrapToken(token)
-        });
-        const apiKey = response.apiKeys[0].key;
-        expect(apiKey).toBeTruthy();
-        console.log('Api Key created:\n', apiKey);
-
-        response = await configService.createRepository({
-          token: apiKey,
-          repository: configRepo,
-        });
-        console.log('Repository Created:\n', response);
-        expect(response).toEqual({});
-
-        // checking key string value
-        response = await configService.save({
-          token: apiKey,
-          repository: configRepo,
-          key: 'STR-VAL',
-          value: 'Hello, World!',
-        });
-        response = await configService.fetch({
-          token: apiKey,
-          repository: configRepo,
-          key: 'STR-VAL',
-        });
-        console.log('Fetched from Repository:\n', response);
-        expect(response).toEqual({
-          key: 'STR-VAL',
-          value: 'Hello, World!',
-        });
-
-        // checking key numeric value
-        response = await configService.save({
-          token: apiKey,
-          repository: configRepo,
-          key: 'NUM-VAL',
-          value: Math.PI,
-        });
-        response = await configService.fetch({
-          token: apiKey,
-          repository: configRepo,
-          key: 'NUM-VAL',
-        });
-        console.log('Fetched from Repository:\n', response);
-        expect(response).toEqual({
-          key: 'NUM-VAL',
-          value: Math.PI,
-        });
-
-        // checking key object value
-        response = await configService.save({
-          token: apiKey,
-          repository: configRepo,
-          key: 'OBJ-VAL',
-          value: {
-            str: 'Hello, World!',
-          },
-        });
-        response = await configService.fetch({
-          token: apiKey,
-          repository: configRepo,
-          key: 'OBJ-VAL',
-        });
-        console.log('Fetched from Repository:\n', response);
-        expect(response).toEqual({
-          key: 'OBJ-VAL',
-          value: {
-            str: 'Hello, World!',
-          },
-        });
-
-        // checking Entries
-        response = await configService.entries({
-          token: apiKey,
-          repository: configRepo,
-          key: ''
-        });
-        console.log('Entries of the Repository:\n', response);
-        expect(response.entries.length).toBe(3);
-
-        // checking Save Entry
-        response = await configService.save({
-          token: apiKey,
-          repository: configRepo,
-          key: 'OBJ-VAL',
-          value: {
-            newStr: 'Hello, Configuration Service!',
-          },
-        });
-        response = await configService.fetch({
-          token: apiKey,
-          repository: configRepo,
-          key: 'OBJ-VAL',
-        });
-        console.log('Fetched from Repository:\n', response);
-        expect(response).toEqual({
-          key: 'OBJ-VAL',
-          value: {
-            newStr: 'Hello, Configuration Service!',
-          },
-        });
-
-        // Checking Delete Entry
-        response = await configService.delete({
-          token: apiKey,
-          repository: configRepo,
-          key: 'OBJ-VAL',
-        });
-        response = await configService.entries({
-          token: apiKey,
-          repository: configRepo,
-          key: ''
-        });
-        console.log('Entries of the Repository:\n', response);
-        expect(response.entries.length).toBe(2);
-
-
-        // Remove the Organization created
-        response = await organizationService.deleteOrganization({
-          ...wrapToken(token),
-          organizationId: orgId,
-        });
-        expect(response.deleted).toBe(true);
-        console.log('Organization deleted:\n', response.deleted);
-      } catch (error) {
-        console.log('ERROR:\n', error);
-      } finally {
-        dispatcher.finalize && dispatcher.finalize();
+      response = await organizationService.addOrganizationApiKey({
+        organizationId,
+        apiKeyName,
+        claims: { role: 'Owner' },
+        ...wrapToken(token)
+      });
+  
+      const apiKey = response.apiKeys[0].key;
+      expect(apiKey).toBeTruthy();
+  
+      response = await configService.createRepository({
+        token: apiKey,
+        repository: configRepo,
+      });
+  
+      expect(response).toEqual({});
+  
+      response = await configService.save({
+        token: apiKey,
+        repository: configRepo,
+        key: 'STR-VAL',
+        value: 'Hello, World!',
+      });
+      
+      response = await configService.fetch({
+        token: apiKey,
+        repository: configRepo,
+        key: 'STR-VAL',
+      });
+      
+      expect(response).toEqual({
+        key: 'STR-VAL',
+        value: 'Hello, World!',
+      });
+  
+      response = await configService.save({
+        token: apiKey,
+        repository: configRepo,
+        key: 'NUM-VAL',
+        value: Math.PI,
+      });
+      
+      response = await configService.fetch({
+        token: apiKey,
+        repository: configRepo,
+        key: 'NUM-VAL',
+      });
+      
+      expect(response).toEqual({
+        key: 'NUM-VAL',
+        value: Math.PI,
+      });
+  
+      response = await configService.save({
+        token: apiKey,
+        repository: configRepo,
+        key: 'OBJ-VAL',
+        value: {
+          str: 'Hello, World!',
+        },
+      });
+      response = await configService.fetch({
+        token: apiKey,
+        repository: configRepo,
+        key: 'OBJ-VAL',
+      });
+      
+      expect(response).toEqual({
+        key: 'OBJ-VAL',
+        value: {
+          str: 'Hello, World!',
+        },
+      });
+  
+      response = await configService.entries({
+        token: apiKey,
+        repository: configRepo,
+        key: ''
+      });
+      
+      expect(response.entries.length).toBe(3);
+      
+      response = await configService.save({
+        token: apiKey,
+        repository: configRepo,
+        key: 'OBJ-VAL',
+        value: {
+          newStr: 'Hello, Configuration Service!',
+        },
+      });
+      
+      response = await configService.fetch({
+        token: apiKey,
+        repository: configRepo,
+        key: 'OBJ-VAL',
+      });
+      
+      expect(response).toEqual({
+        key: 'OBJ-VAL',
+        value: {
+          newStr: 'Hello, Configuration Service!',
+        },
+      });
+  
+      response = await configService.delete({
+        token: apiKey,
+        repository: configRepo,
+        key: 'OBJ-VAL',
+      });
+      
+      response = await configService.entries({
+        token: apiKey,
+        repository: configRepo,
+        key: ''
+      });
+      
+      expect(response.entries.length).toBe(2);
+      
+      response = await organizationService.deleteOrganization({
+        organizationId,
+        ...wrapToken(token),
+      });
+      
+      expect(response.deleted).toBe(true);
+    
+      if (dispatcher.finalize) {
+        dispatcher.finalize();
       }
-
     });
   });
 };
