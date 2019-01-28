@@ -27,15 +27,19 @@ export class AccountService implements AccountServiceInterface {
   }
 
   list(request: ListRequest): Promise<ListResponse> {
-    return this.organizationService.getMembership({ token: this.token })
-      .then(response => ({
+    return this.organizationService.getMembership({
+      token: {
+        issuer: 'Auth0',
+        token: this.token
+      }
+    }).then(response => ({
         accounts: (response.organizations || []).map(org => ({
           accountId: org.id,
           name: org.name,
         }))
       }));
   }
- 
+
   createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse> {
     return this.organizationService.createOrganization({
       ...request,
@@ -65,17 +69,23 @@ export class AccountService implements AccountServiceInterface {
 
   invite(request: InviteRequest): Promise<InviteResponse> {
     return this.organizationService.inviteOrganizationMember({
-      token: this.token,
       organizationId: request.accountId,
       userId: request.userId,
+      token: {
+        issuer: 'Auth0',
+        token: this.token
+      }
     });
   }
 
   revoke(request: RevokeRequest): Promise<RevokeResponse> {
     return this.organizationService.kickoutOrganizationMember({
-      token: this.token,
       organizationId: request.accountId,
       userId: request.userId,
+      token: {
+        issuer: 'Auth0',
+        token: this.token
+      }
     });
   }
 };

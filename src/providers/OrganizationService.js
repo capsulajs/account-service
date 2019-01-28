@@ -1,7 +1,7 @@
 // @flow
 
 import { Dispatcher } from '@capsulajs/capsulajs-transport-providers';
-import { OrganizationServiceInterface } from '../api/OrganizationServiceInterface';
+import { OrganizationServiceInterface } from 'api/OrganizationServiceInterface';
 import {
   CreateOrganizationRequest,
   CreateOrganizationResponse,
@@ -25,7 +25,8 @@ import {
   AddOrganizationApiKeyResponse,
   DeleteOrganizationApiKeyRequest,
   DeleteOrganizationApiKeyResponse,
-} from '../api/OrganizationServiceTypes';
+} from 'api/OrganizationServiceTypes';
+import { Dispatcher } from '@capsulajs/capsulajs-transport-providers';
 
 export class OrganizationService implements OrganizationServiceInterface {
   dispatcher: Dispatcher;
@@ -35,79 +36,46 @@ export class OrganizationService implements OrganizationServiceInterface {
   }
 
   createOrganization(request: CreateOrganizationRequest): Promise<CreateOrganizationResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/create',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/create', request);
   }
 
   updateOrganization(request: UpdateOrganizationRequest): Promise<UpdateOrganizationResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/updateOrganization',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/updateOrganization', request);
   }
 
   getOrganization(request: GetOrganizationRequest): Promise<GetOrganizationResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/getOrganization',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/getOrganization', request);
   }
 
   deleteOrganization(request: DeleteOrganizationRequest): Promise<DeleteOrganizationResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/delete',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/delete', request);
   }
 
   getOrganizationMembers(request: GetOrganizationMembersRequest): Promise<GetOrganizationMembersResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/getOrganizationMembers',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/getOrganizationMembers', request);
   }
 
   inviteOrganizationMember(request: InviteOrganizationMemberRequest): Promise<InviteOrganizationMemberResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/inviteMember',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/inviteMember', request);
   };
 
   kickoutOrganizationMember(request: KickoutOrganizationMemberRequest): Promise<KickoutOrganizationMemberResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/kickoutMember',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/kickoutMember', request);
   };
 
   getMembership(request: GetMembershipRequest): Promise<GetMembershipResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/getUserOrganizationsMembership',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/getUserOrganizationsMembership', request);
   };
 
   leaveOrganization(request: LeaveOrganizationRequest): Promise<LeaveOrganizationResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/leaveOrganization',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/leaveOrganization', request);
   };
 
   addOrganizationApiKey(request: AddOrganizationApiKeyRequest): Promise<AddOrganizationApiKeyResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/addOrganizationApiKey',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/addOrganizationApiKey', request);
   };
 
   deleteOrganizationApiKey(request: DeleteOrganizationApiKeyRequest): Promise<DeleteOrganizationApiKeyResponse> {
-    return this.dispatcher.dispatch(
-      '/organizations/deleteOrganizationApiKey',
-      request,
-    );
+    return this.dispatcher.dispatch('/organizations/deleteOrganizationApiKey', request);
   }
 };
