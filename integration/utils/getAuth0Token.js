@@ -3,7 +3,6 @@ import axios from 'axios';
 const CLIENT_ID = 'FhUqfTk9Gr1225o2Smwb4CVOw2602RLH';
 const CLIENT_SECRET = 'WUtQBZrfZW6OGOmqNL2ER_3vNpJJjjMOUFSGGrTac7Ux4bL_mPbEsvo8vxfYb7GH';
 const CLIENT_DOMAIN = 'kach95.auth0.com';
-
 const data = {
   client_id: CLIENT_ID,
   client_secret: CLIENT_SECRET,

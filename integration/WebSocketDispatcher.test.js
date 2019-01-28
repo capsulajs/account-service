@@ -3,6 +3,8 @@ import { getAuth0Token } from './utils/getAuth0Token';
 import { organization } from './utils/constants';
 import { wrapToken } from './utils/utils';
 
+jest.setTimeout(30000);
+
 describe('WebsScketDispatcher sanity test', () => {
   it('Opens a connection', async () => {
     expect.assertions(1);
@@ -16,12 +18,12 @@ describe('WebsScketDispatcher sanity test', () => {
     const wsDispatcher = getWebSocketDispatcher();
     const token = await getAuth0Token();
     await wsDispatcher.open();
-    const { accountId } = await wsDispatcher.dispatch('/organizations/create', {
+    const { id: organizationId } = await wsDispatcher.dispatch('/organizations/create', {
       ...organization,
       ...wrapToken(token)
     });
     await wsDispatcher.dispatch('/organizations/delete', {
-      accountId,
+      organizationId,
       ...wrapToken(token)
     });
     await wsDispatcher.finalize();
