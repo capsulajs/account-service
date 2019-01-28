@@ -13,7 +13,6 @@ import {
   RevokeRequest,
   RevokeResponse
 } from 'api/AccountServiceTypes';
-
 import { AccountServiceInterface } from 'api/AccountServiceInterface';
 import { Dispatcher } from 'transport/api';
 import { OrganizationService } from './OrganizationService';

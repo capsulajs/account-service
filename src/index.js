@@ -1,4 +1,4 @@
+import { AccountService } from './providers/AccountService';
 import { OrganizationService } from './providers/OrganizationService';
-import { ConfigurationService } from './providers/ConfigurationService';
 
-export { OrganizationService, ConfigurationService };
+export { AccountService, OrganizationService };

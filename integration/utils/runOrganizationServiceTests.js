@@ -5,7 +5,7 @@ import { wrapToken } from './utils';
 
 jest.setTimeout(30000);
 
-export const runOrganizationServiceTests  = dispatcher => {
+export const runOrganizationServiceTests = dispatcher => {
   const dispatcherName = dispatcher.constructor.name;
 
   describe(`Sanity Test of the Organization Service using ${dispatcherName}`, () => {
