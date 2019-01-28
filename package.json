@@ -21,26 +21,13 @@
     ],
     "testEnvironment": "node"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/capsulajs/account-service.git"
-  },
-  "keywords": [
-    "microfrontend",
-    "service",
-    "account",
-    "login",
-    "authentication"
-  ],
   "author": "Stephane Benayoun (https://github.com/stephanebenayoun)",
   "license": "MIT",
   "homepage": "https://github.com/capsulajs/account-service#readme",
   "dependencies": {
+    "@capsulajs/capsulajs-transport-providers": "^0.1.0",
     "axios": "^0.18.0",
     "flow": "^0.2.3"
-  },
-  "alias": {
-    "transport": "./src/transport"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0",
