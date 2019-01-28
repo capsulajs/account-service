@@ -1,7 +1,6 @@
 import { getWebSocketDispatcher } from './utils/transports';
-import { getAuth0Token } from './utils/getAuth0Token';
-import { organization } from './utils/constants';
-import { wrapToken } from './utils/utils';
+import { organization } from './utils/mock';
+import { getAuth0Token, wrapToken } from './utils/utils';
 
 jest.setTimeout(30000);
 

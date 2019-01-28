@@ -1,7 +1,6 @@
 import { OrganizationService } from 'providers';
-import { organization } from './constants';
-import { getAuth0Token } from './getAuth0Token';
-import { wrapToken } from './utils';
+import { organization } from './mock';
+import { getAuth0Token, wrapToken } from './utils';
 
 jest.setTimeout(30000);
 
@@ -43,9 +42,10 @@ export const runOrganizationServiceTests = dispatcher => {
 
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
       expect.assertions(7);
-  
+      
+      const userId = `${process.env.AUTH_CLIENT_ID}@clients`;
       const token = await getAuth0Token();
-      const { id: organizationId, ownerId: userId } = await organizationService.createOrganization({
+      const { id: organizationId } = await organizationService.createOrganization({
         ...organization,
         ...wrapToken(token)
       });

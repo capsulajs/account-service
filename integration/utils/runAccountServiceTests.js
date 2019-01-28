@@ -1,6 +1,6 @@
 import { AccountService } from 'providers';
 import { getAuth0Token } from './utils';
-import { account } from './constants';
+import { account } from './mock';
 
 jest.setTimeout(30000);
 
