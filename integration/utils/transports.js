@@ -1,13 +1,7 @@
-import { WebSocketDispatcher } from 'transport/WebSocket';
-import { AxiosDispatcher } from 'transport/HTTP';
+global.WebSocket = require('ws');
 
-import {
-  wsUrl,
-  httpUrl,
- } from './constants';
+import { WebSocketDispatcher } from '@capsulajs/capsulajs-transport-providers';
+import { AxiosDispatcher } from '@capsulajs/capsulajs-transport-providers';
 
-const token = require('./Auth0_security_token.json');
-
-export const getWebSocketDispatcher = () => new WebSocketDispatcher(wsUrl);
-
-export const getHttpDispatcher = () => new AxiosDispatcher(httpUrl);
+export const getWebSocketDispatcher = () => new WebSocketDispatcher(process.env.WSS_URL);
+export const getHttpDispatcher = () => new AxiosDispatcher(process.env.HTTP_URL);
