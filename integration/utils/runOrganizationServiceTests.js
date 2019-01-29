@@ -7,9 +7,14 @@ jest.setTimeout(30000);
 export const runOrganizationServiceTests = dispatcher => {
   const dispatcherName = dispatcher.constructor.name;
   const userId = `${process.env.AUTH_CLIENT_ID}@clients`;
+  const organizationService = new OrganizationService(dispatcher);
 
   describe(`Sanity Test of the Organization Service using ${dispatcherName}`, () => {
-    const organizationService = new OrganizationService(dispatcher);
+    afterEach(async () => {
+      if (dispatcher.finalize) {
+        await dispatcher.finalize();
+      }
+    });
 
     it(`Create and Delete an Organization using ${dispatcherName}`, async () => {
       expect.assertions(4);
@@ -36,9 +41,6 @@ export const runOrganizationServiceTests = dispatcher => {
         ...wrapToken(token)
       });
       expect(deleted).toBe(true);
-      if (dispatcher.finalize) {
-        await dispatcher.finalize();
-      }
     });
 
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
@@ -81,9 +83,6 @@ export const runOrganizationServiceTests = dispatcher => {
         ...wrapToken(token)
       });
       expect(deleted).toBe(true);
-      if (dispatcher.finalize) {
-        await dispatcher.finalize();
-      }
     });
     
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
@@ -123,10 +122,6 @@ export const runOrganizationServiceTests = dispatcher => {
         ...wrapToken(token)
       });
       expect(response.deleted).toBe(true);
-
-      if (dispatcher.finalize) {
-        await dispatcher.finalize();
-      }
     });
   });
 };
