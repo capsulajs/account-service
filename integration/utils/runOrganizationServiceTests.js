@@ -6,6 +6,7 @@ jest.setTimeout(30000);
 
 export const runOrganizationServiceTests = dispatcher => {
   const dispatcherName = dispatcher.constructor.name;
+  const userId = `${process.env.AUTH_CLIENT_ID}@clients`;
 
   describe(`Sanity Test of the Organization Service using ${dispatcherName}`, () => {
     const organizationService = new OrganizationService(dispatcher);
@@ -43,7 +44,6 @@ export const runOrganizationServiceTests = dispatcher => {
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
       expect.assertions(7);
       
-      const userId = `${process.env.AUTH_CLIENT_ID}@clients`;
       const token = await getAuth0Token();
       const { id: organizationId } = await organizationService.createOrganization({
         ...organization,
