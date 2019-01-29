@@ -13,7 +13,6 @@ import {
   RevokeRequest,
   RevokeResponse
 } from 'api/AccountServiceTypes';
-
 import { AccountServiceInterface } from 'api/AccountServiceInterface';
 import { Dispatcher } from '@capsulajs/capsulajs-transport-providers';
 import { OrganizationService } from './OrganizationService';
@@ -23,7 +22,7 @@ export class AccountService implements AccountServiceInterface {
   token: Token;
 
   constructor(dispatcher: Dispatcher, token: Token) {
-    this.orgService = new OrganizationService(dispatcher);
+    this.organizationService = new OrganizationService(dispatcher);
     this.token = token;
   }
 
@@ -48,8 +47,7 @@ export class AccountService implements AccountServiceInterface {
         issuer: 'Auth0',
         token: this.token
       }
-    }).
-    then(response => ({
+    }).then(response => ({
       accountId: response.id,
       name: response.name,
       email: response.email,
@@ -80,7 +78,7 @@ export class AccountService implements AccountServiceInterface {
     });
   }
 
-  revoke(request: { userId: string, accountId: string }): Promise<null> {
+  revoke(request: RevokeRequest): Promise<RevokeResponse> {
     return this.organizationService.kickoutOrganizationMember({
       organizationId: request.accountId,
       userId: request.userId,

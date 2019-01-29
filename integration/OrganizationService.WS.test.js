@@ -1,7 +1,4 @@
-global.WebSocket = require('ws');
-
-import { getWebSocketDispatcher } from './utils/transports';
-
 import { runOrganizationServiceTests } from './utils/runOrganizationServiceTests';
+import { getWebSocketDispatcher } from './utils/transports';
 
 runOrganizationServiceTests(getWebSocketDispatcher());

@@ -1,5 +1,6 @@
 // @flow
 
+import { Dispatcher } from '@capsulajs/capsulajs-transport-providers';
 import { OrganizationServiceInterface } from 'api/OrganizationServiceInterface';
 import {
   CreateOrganizationRequest,
