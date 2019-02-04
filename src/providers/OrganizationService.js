@@ -26,7 +26,6 @@ import {
   DeleteOrganizationApiKeyRequest,
   DeleteOrganizationApiKeyResponse,
 } from 'api/OrganizationServiceTypes';
-import { Dispatcher } from '@capsulajs/capsulajs-transport-providers';
 
 export class OrganizationService implements OrganizationServiceInterface {
   dispatcher: Dispatcher;

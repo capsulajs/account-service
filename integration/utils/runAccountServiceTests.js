@@ -9,6 +9,9 @@ export const runAccountServiceTests = dispatcher => {
     it('Create and delete an account', async () => {
       expect.assertions(2);
       const token = await getAuth0Token();
+      
+      console.log(token);
+      
       const service = new AccountService(dispatcher, token);
       const { accountId } = await service.createAccount(account);
       expect(accountId).toBeTruthy();
