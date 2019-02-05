@@ -571,9 +571,9 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@capsulajs/capsulajs-configuration-service@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/@capsulajs/capsulajs-configuration-service/-/capsulajs-configuration-service-0.1.0.tgz#feb6f283065f50a994243d092617333fb7922280"
+"@capsulajs/capsulajs-configuration-service@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.npmjs.org/@capsulajs/capsulajs-configuration-service/-/capsulajs-configuration-service-0.1.2.tgz#ad4c0c5c7240b457c842411f13e2ecf83bd1c7e2"
   dependencies:
     "@capsulajs/capsulajs-transport-providers" "^0.1.1"
 

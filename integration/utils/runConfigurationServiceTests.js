@@ -7,22 +7,21 @@ jest.setTimeout(60000);
 
 export const runConfigurationServiceTests = dispatcher => {
   const dispatcherName = dispatcher.constructor.name;
-  const userId = `${process.env.AUTH_CLIENT_ID}@clients`;
   const organizationService = new OrganizationService(dispatcher);
   
   describe(`Sanity Test of the Configuration Service using ${dispatcherName}`, () => {
     it('Create an Organization and a Configuration for it', async () => {
-      expect.assertions(10);
+      expect.assertions(8);
       const token = await getAuth0Token();
       
       let { id: organizationId } = await organizationService.createOrganization({ ...organization, ...wrapToken(token) });
       expect(organizationId).toBeTruthy();
       
       const response = await organizationService.addOrganizationApiKey({
-        token,
         organizationId,
         apiKeyName: 'API_KEY',
         claims: { role: 'Owner' },
+        ...wrapToken(token)
       });
       
       const apiKey = response.apiKeys[0].key;
@@ -34,8 +33,8 @@ export const runConfigurationServiceTests = dispatcher => {
       expect(await configService.fetch({ repository, key })).toEqual({ key, value });
       await configService.save({ repository, key, value: Math.PI });
       expect(await configService.fetch({ repository, key })).toEqual({ key, value: Math.PI });
-      await configService.save({ repository, key, value: { value });
-      expect(await configService.fetch({ repository, key }).toEqual({ key, value: { value } });
+      await configService.save({ repository, key, value: { value } });
+      expect(await configService.fetch({ repository, key })).toEqual({ key, value: { value } });
       expect((await configService.entries({ repository })).entries).toHaveLength(3);
       await configService.delete({ repository, key });
       expect((await configService.entries({ repository })).entries).toHaveLength(2);
