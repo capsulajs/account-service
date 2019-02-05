@@ -25,29 +25,32 @@ export class AccountService implements AccountServiceInterface {
     this.organizationService = new OrganizationService(dispatcher);
     this.token = token;
   }
+  
+  prepRequest(request) {
+    return {
+      token: {
+        token: this.token,
+        issuer: 'Auth0'
+      },
+      ...request
+    };
+  }
 
   list(request: ListRequest): Promise<ListResponse> {
-    return this.organizationService.getMembership({
-      token: {
-        issuer: 'Auth0',
-        token: this.token
-      }
-    }).then(response => ({
-        accounts: (response.organizations || []).map(org => ({
-          accountId: org.id,
-          name: org.name,
-        }))
-      }));
+    return this.organizationService.getMembership(
+      this.prepRequest(request))
+    .then(response => ({
+      accounts: (response.organizations || []).map(org => ({
+        accountId: org.id,
+        name: org.name,
+      }))
+    }));
   }
 
   createAccount(request: CreateAccountRequest): Promise<CreateAccountResponse> {
-    return this.organizationService.createOrganization({
-      ...request,
-      token: {
-        issuer: 'Auth0',
-        token: this.token
-      }
-    }).then(response => ({
+    return this.organizationService.createOrganization(
+      this.prepRequest(request)
+    ).then(response => ({
       accountId: response.id,
       name: response.name,
       email: response.email,
@@ -55,37 +58,23 @@ export class AccountService implements AccountServiceInterface {
   }
 
   deleteAccount(request: DeleteAccountRequest): Promise<DeleteAccountResponse> {
-    return this.organizationService.deleteOrganization({
-      organizationId: request.accountId,
-      token: {
-        issuer: 'Auth0',
-        token: this.token
-      }
-    }).then(response => ({
+    return this.organizationService.deleteOrganization(
+      this.prepRequest({ organizationId: request.accountId })
+    ).then(response => ({
       accountId: response.organizationId,
       deleted: response.deleted
     }));
   }
 
   invite(request: InviteRequest): Promise<InviteResponse> {
-    return this.organizationService.inviteOrganizationMember({
-      organizationId: request.accountId,
-      userId: request.userId,
-      token: {
-        issuer: 'Auth0',
-        token: this.token
-      }
-    });
+    return this.organizationService.inviteOrganizationMember(
+      this.prepRequest({ organizationId: request.accountId, userId: request.userId })
+    );
   }
 
   revoke(request: RevokeRequest): Promise<RevokeResponse> {
-    return this.organizationService.kickoutOrganizationMember({
-      organizationId: request.accountId,
-      userId: request.userId,
-      token: {
-        issuer: 'Auth0',
-        token: this.token
-      }
-    });
+    return this.organizationService.kickoutOrganizationMember(
+      this.prepRequest({ organizationId: request.accountId, userId: request.userId })
+    );
   }
 };
