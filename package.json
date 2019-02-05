@@ -21,6 +21,9 @@
       "node_modules",
       "src"
     ],
+    "testPathIgnorePatterns": [
+      "integration"
+    ],
     "testEnvironment": "node",
     "collectCoverage": true,
     "coverageReporters": [
