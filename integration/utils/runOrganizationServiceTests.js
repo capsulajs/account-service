@@ -1,174 +1,127 @@
-import { OrganizationService } from 'Provider';
-
-const token = require('./Auth0_security_token.json');
-const { userId } = require('./Auth0_security_userid.json');
-
-import {
-  organizationName,
-  organizationEmail,
-} from './constants';
+import { OrganizationService } from 'providers';
+import { organization } from './mock';
+import { getAuth0Token, wrapToken } from './utils';
 
 jest.setTimeout(30000);
 
-export const runOrganizationServiceTests  = dispatcher => {
-
+export const runOrganizationServiceTests = dispatcher => {
   const dispatcherName = dispatcher.constructor.name;
+  const userId = `${process.env.AUTH_CLIENT_ID}@clients`;
+  const organizationService = new OrganizationService(dispatcher);
 
   describe(`Sanity Test of the Organization Service using ${dispatcherName}`, () => {
-
-    const orgService = new OrganizationService(dispatcher);
+    afterEach(async () => {
+      if (dispatcher.finalize) {
+        await dispatcher.finalize();
+      }
+    });
 
     it(`Create and Delete an Organization using ${dispatcherName}`, async () => {
       expect.assertions(4);
-
-      let response  = await orgService.createOrganization({
-        token: token,
-        name: organizationName,
-        email: organizationEmail,
+      const token = await getAuth0Token();
+      const { id: organizationId }  = await organizationService.createOrganization({
+        ...organization,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      const orgId = response.id;
-      expect(orgId).toBeTruthy();
-      console.log('Organization created: ', orgId);
-
-      response = await orgService.updateOrganization({
-        token: token,
+      expect(organizationId).toBeTruthy();
+      const { name } = await organizationService.updateOrganization({
+        organizationId,
         name: 'Next-gen-Acme',
         email: 'office@next-get-acme.com',
-        organizationId: orgId,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      expect(response.name).toBe('Next-gen-Acme');
-      console.log('Organization updated: ', response.name);
-
-      response = await orgService.getOrganization({
-        token: token,
-        organizationId: orgId,
+      expect(name).toBe('Next-gen-Acme');
+      const { id } = await organizationService.getOrganization({
+        organizationId,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      expect(response.id).toBe(orgId);
-      console.log('Gotten Organization: ', response.id);
-
-      response = await orgService.deleteOrganization({
-        token: token,
-        organizationId: orgId,
+      expect(id).toBe(organizationId);
+      const { deleted } = await organizationService.deleteOrganization({
+        organizationId,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      expect(response.deleted).toBe(true);
-      console.log('Delete Organization: ', response);
-
-      dispatcher.finalize && dispatcher.finalize();
+      expect(deleted).toBe(true);
     });
 
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
       expect.assertions(7);
-
-      let response = await orgService.createOrganization({
-        token: token,
-        name: organizationName,
-        email: organizationEmail,
+      
+      const token = await getAuth0Token();
+      const { id: organizationId } = await organizationService.createOrganization({
+        ...organization,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      const orgId = response.id;
-      expect(orgId).toBeTruthy();
-      console.log('Organization created: ', orgId);
-
-      response = await orgService.getOrganizationMembers({
-        token: token,
-        organizationId: orgId,
+      const { members } = await organizationService.getOrganizationMembers({
+        organizationId,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      expect(response.members.length).toBe(0);
-      console.log('Organization Members count: :', response.members.length);
-
-      response = await orgService.inviteOrganizationMember({
-        token: token,
-        organizationId: orgId,
-        userId: userId,
-      });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
+      expect(members.length).toBe(0);
+      expect(await organizationService.inviteOrganizationMember({
+        organizationId,
+        userId,
+        ...wrapToken(token)
+      })).toEqual({});
       expect(response).toEqual({});
-      console.log('Member was invited');
-
-      response = await orgService.getOrganizationMembers({
-        token: token,
-        organizationId: orgId,
+      const { members: members1 } = await orgService.getOrganizationMembers({
+        organizationId,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      expect(response.members.length).toBe(1);
-      console.log('Organization Members count: :', response.members.length);
-
-      response = await orgService.kickoutOrganizationMember({
-        token: token,
-        organizationId: orgId,
-        userId: userId,
+      expect(members1.length).toBe(1);
+      expect(await organizationService.kickoutOrganizationMember({
+        organizationId,
+        userId,
+        ...wrapToken(token)
+      })).toEqual({});
+      const { members: members2 } = await organizationService.getOrganizationMembers({
+        organizationId,
+        userId,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      expect(response).toEqual({});
-      console.log('Member was kicked  out');
-
-      response = await orgService.getOrganizationMembers({
-        token: token,
-        organizationId: orgId,
+      expect(members2.length).toBe(0);
+      const { deleted } = await organizationService.deleteOrganization({
+        organizationId,
+        ...wrapToken(token)
       });
-      response.errorMessage && console.log(`ERROR: ${response.errorCode}: ${response.errorMessage}`);
-      expect(response.members.length).toBe(0);
-      console.log('Organization Members count: :', response.members.length);
-
-      response = await orgService.deleteOrganization({
-        token: token,
-        organizationId: orgId,
-      });
-      expect(response.deleted).toBe(true);
-      console.log('Organization deleted: ', response.deleted);
-
-      dispatcher.finalize && dispatcher.finalize();
+      expect(deleted).toBe(true);
     });
-
+    
     it(`Get/Add/Remove Organization members  using ${dispatcherName}`, async () => {
       expect.assertions(5);
 
-      let response = await orgService.createOrganization({
-        token: token,
-        name: organizationName,
-        email: organizationEmail,
+      const token = await getAuth0Token();
+      let response = await organizationService.createOrganization({
+        ...organization,
+        ...wrapToken(token)
       });
-      const orgId = response.id;
-      expect(orgId).toBeTruthy();
-      console.log('Organization created: ', orgId);
+      const organizationId = response.id;
+      expect(organizationId).toBeTruthy();
 
-      response = await orgService.getOrganization({
-        token: token,
-        organizationId: orgId,
+      response = await organizationService.getOrganization({
+        organizationId,
+        ...wrapToken(token)
       });
       expect(response.apiKeys.length).toBe(0);
-      console.log('Api Keys count before addition :', response.apiKeys.length);
 
-      response = await orgService.addOrganizationApiKey({
-        token: token,
-        organizationId: orgId,
+      response = await organizationService.addOrganizationApiKey({
+        organizationId,
         apiKeyName: 'TEST-API-KEY',
-        claims: { role: 'Admin' }
+        claims: { role: 'Admin' },
+        ...wrapToken(token)
       });
       expect(response.apiKeys.length).toBe(1);
-      console.log('Api Keys count after addition: ', response.apiKeys.length);
 
-      response = await orgService.deleteOrganizationApiKey({
-        token: token,
-        organizationId: orgId,
+      response = await organizationService.deleteOrganizationApiKey({
+        organizationId,
         apiKeyName: 'TEST-API-KEY',
+        ...wrapToken(token)
       });
       expect(response.apiKeys.length).toBe(0);
-      console.log('Api Keys count after deletion: ', response.apiKeys.length);
 
-      response = await orgService.deleteOrganization({
-        token: token,
-        organizationId: orgId,
+      response = await organizationService.deleteOrganization({
+        organizationId,
+        ...wrapToken(token)
       });
       expect(response.deleted).toBe(true);
-      console.log('Organization deleted: ', response.deleted);
-
-      dispatcher.finalize && dispatcher.finalize();
     });
   });
-}
+};
