@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   tags: {
     allowUnknownTags: true,

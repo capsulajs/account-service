@@ -8,7 +8,7 @@
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build": "yarn rm:lib && yarn build:commonjs",
     "test": "cross-env BABEL_ENV=jest jest",
-    "jsdoc": "jsdoc -r src/ -c jsdoc_conf.js -d ./docs",
+    "jsdoc": "jsdoc -r src/ -c jsdoc.conf.js -d ./docs",
     "flow": "flow"
   },
   "jest": {
