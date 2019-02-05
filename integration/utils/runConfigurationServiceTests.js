@@ -38,7 +38,7 @@ export const runConfigurationServiceTests = dispatcher => {
       expect((await configService.entries({ repository })).entries).toHaveLength(3);
       await configService.delete({ repository, key });
       expect((await configService.entries({ repository })).entries).toHaveLength(2);
-      expect(await organizationService.deleteOrganization({ organizationId })).toEqual({ deleted: true });
+      expect((await organizationService.deleteOrganization({ organizationId })).deleted).toEqual(true);
       if (dispatcher.finalize) {
         dispatcher.finalize();
       }
